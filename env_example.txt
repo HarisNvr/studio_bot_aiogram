@@ -2,7 +2,7 @@
 ADMIN_IDS=
 
 #BOT_TOKENS
-BOT=
+BOT_TOKEN=
 
 #Postgre_Stuff
 POSTGRES_USER=

@@ -37,7 +37,7 @@ sudo nano .env
 ADMIN_IDS=  # Telegram_ID администраторов
 
 #BOT_TOKENS
-BOT=  # Telegram_API_bot_token
+BOT_TOKEN=  # Telegram_API_bot_token
 
 #Postgre_Stuff
 POSTGRES_USER=  # Имя пользователя для доступа к БД
