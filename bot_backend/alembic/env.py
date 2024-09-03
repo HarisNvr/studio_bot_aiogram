@@ -4,7 +4,9 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
-from sql_orm import Base, DATABASE_URL
+
+from bot_backend.core.database.models import Base
+from bot_backend.core.middleware.settings import DATABASE_URL
 
 config = context.config
 
