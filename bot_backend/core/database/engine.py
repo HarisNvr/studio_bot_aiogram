@@ -1,21 +1,25 @@
 from sqlalchemy.ext.asyncio import (
-    AsyncSession, create_async_engine, async_sessionmaker
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
 )
 
-from bot_backend.core.middleware.settings import DATABASE_URL, ENGINE_ECHO
+from core.middleware.settings import DATABASE_URL, ENGINE_ECHO
 
 engine = create_async_engine(
     DATABASE_URL,
     echo=ENGINE_ECHO
 )
-"""Create an asynchronous engine for interacting with the database."""
 
-session_maker = async_sessionmaker(
-    bind=engine,
+AsyncSessionLocal = async_sessionmaker(
+    engine,
     class_=AsyncSession,
     expire_on_commit=False
 )
-"""
-Create a session maker for generating asynchronous sessions with the database.
-"""
 
+
+async def get_async_session():
+    """Return session generator instance to interact with the database."""
+
+    async with AsyncSessionLocal() as async_session:
+        yield async_session

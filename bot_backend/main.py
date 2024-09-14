@@ -3,7 +3,7 @@ from asyncio import run
 
 from aiogram import Dispatcher
 
-from bot_backend.core.database.background_tasks import morning_routine
+from core.database.background_tasks import morning_routine
 from core.middleware.settings import BOT
 
 

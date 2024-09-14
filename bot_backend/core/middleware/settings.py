@@ -43,8 +43,10 @@ DB_HOST = getenv('DB_HOST')
 MIGRATE = getenv('MIGRATE', '').lower() == 'true'
 COMMIT_MESSAGE = getenv('COMMIT_MESSAGE')
 
-DATABASE_URL = (f'postgresql+asyncpg://'
-                f'{POSTGRES_USER}:{POSTGRES_PASSWORD}@{DB_HOST}/{POSTGRES_DB}')
+DATABASE_URL = (
+    f'postgresql+asyncpg://{POSTGRES_USER}:'
+    f'{POSTGRES_PASSWORD}@{DB_HOST}/{POSTGRES_DB}'
+)
 ENGINE_ECHO = getenv('ENGINE_ECHO', '').lower() == 'true'
 
 INSTAGRAM = getenv('INSTAGRAM')
