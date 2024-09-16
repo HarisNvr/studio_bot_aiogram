@@ -63,7 +63,7 @@ class UserMessage(Base):
     Represents a user's message in the database.
 
     Attributes:
-        chat_id (int): Foreign key referencing the `Users.id` field, indicating
+        user_id (int): Foreign key referencing the `Users.id` field, indicating
             which user sent the message.
         message_id (int): Unique identifier for the message within the chat.
         message_date (datetime): Timestamp of when the message was sent.
@@ -76,7 +76,7 @@ class UserMessage(Base):
 
     __tablename__ = 'Message_ids'
 
-    chat_id: Mapped[int] = mapped_column(ForeignKey('Users.id'))
+    user_id: Mapped[int] = mapped_column(ForeignKey('Users.id'))
     message_id: Mapped[int] = mapped_column()
     message_date: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True),

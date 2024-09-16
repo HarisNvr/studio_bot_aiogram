@@ -48,9 +48,9 @@ async def record_message_id_to_db(message: Message):
     :return: Nothing
     """
 
-    chat_id = await get_user_id(message)
+    user_id = await get_user_id(message)
     stmt = insert(UserMessage).values(
-        chat_id=chat_id,
+        user_id=user_id,
         message_id=message.message_id
     )
 
