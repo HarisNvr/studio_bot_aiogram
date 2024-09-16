@@ -5,13 +5,18 @@ from aiogram.types import Message
 from core.database.background_tasks import record_message_id_to_db
 from core.keyboards.start_keyboard import get_start_keyboard
 from core.middleware.settings import BOT
+from core.middleware.wrappers import check_bd_chat_id, sub_check
 
 user_router = Router()
 
 
 @user_router.message(Command('start'))
+@check_bd_chat_id
+@sub_check
 async def cmd_start(message: Message):
     """
+    Handles the '/start' command when a user initiates
+    a conversation with the bot.
 
     :param message:
     :return:
