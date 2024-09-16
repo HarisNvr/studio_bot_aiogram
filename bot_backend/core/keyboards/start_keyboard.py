@@ -1,7 +1,7 @@
-from core.middleware.settings import ADMIN_IDS
-
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message
 from aiogram.utils.keyboard import InlineKeyboardBuilder
+
+from core.middleware.settings import ADMIN_IDS
 
 
 async def get_start_keyboard(message: Message):
