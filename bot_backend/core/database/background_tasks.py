@@ -24,23 +24,6 @@ async def morning_routine():
         await session.commit()
 
 
-async def record_message_id_to_db(message: Message):
-    """
-    Record message id's to DB, for 'clean' func.
-    :param message:
-    :return: Nothing
-    """
-
-    stmt = insert(UserMessage).values(
-        chat_id=message.chat.id,
-        message_id=message.message_id
-    )
-
-    async for session in get_async_session():
-        await session.execute(stmt)
-        await session.commit()
-
-
 async def get_user_id(message: Message):
     """
     Retrieves the user's primary key from the database using the chat id.
@@ -56,6 +39,24 @@ async def get_user_id(message: Message):
 
         if user:
             return user.id
+
+
+async def record_message_id_to_db(message: Message):
+    """
+    Record message id's to DB, for 'clean' func.
+    :param message:
+    :return: Nothing
+    """
+
+    chat_id = await get_user_id(message)
+    stmt = insert(UserMessage).values(
+        chat_id=chat_id,
+        message_id=message.message_id
+    )
+
+    async for session in get_async_session():
+        await session.execute(stmt)
+        await session.commit()
 
 
 async def write_user(message: Message):
