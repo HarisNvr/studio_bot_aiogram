@@ -4,7 +4,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from core.middleware.settings import ADMIN_IDS
 
 
-async def get_start_keyboard(message: Message):
+def get_start_keyboard(message: Message):
     """
     Creates a keyboard that contains buttons for the
     /start command, depending on the requesting user
@@ -15,8 +15,8 @@ async def get_start_keyboard(message: Message):
     start_keyboard = InlineKeyboardMarkup(inline_keyboard=[
         [
             InlineKeyboardButton(
-                text='#МыВСети \U0001F4F1',
-                callback_data='soc_profiles'
+                text='О студии \U0001F393',
+                callback_data='studio'
             )
         ],
         [
@@ -27,14 +27,14 @@ async def get_start_keyboard(message: Message):
         ],
         [
             InlineKeyboardButton(
-                text='О студии \U0001F393',
-                callback_data='studio'
+                text='Выездные МК  \U0001F30D',
+                callback_data='offsite_workshops'
             )
         ],
         [
             InlineKeyboardButton(
-                text='Выездные МК  \U0001F30D',
-                callback_data='offsite_workshops'
+                text='#МыВСети \U0001F4F1',
+                callback_data='soc_profiles'
             )
         ],
         [
@@ -45,7 +45,7 @@ async def get_start_keyboard(message: Message):
         ],
         [
             InlineKeyboardButton(
-                text=f'Очистить чат \U0001F9F9',
+                text='Очистить чат \U0001F9F9',
                 callback_data='clean'
             )
         ]
