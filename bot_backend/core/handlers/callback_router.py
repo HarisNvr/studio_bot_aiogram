@@ -1,18 +1,19 @@
 from asyncio import sleep
+from datetime import datetime
 
 from aiogram import Router, F
 from aiogram.exceptions import AiogramError
 from aiogram.types import CallbackQuery
-from sqlalchemy import select, delete
+from sqlalchemy import select, delete, update
 
-from core.database.background_tasks import get_user_id
+from core.database.background_tasks import get_user_id, record_message_id_to_db
 from core.database.engine import get_async_session
-from core.database.models import UserMessage
+from core.database.models import UserMessage, User
 from core.handlers.user_router import (
     cmd_clean, cmd_help, cmd_soc_profiles
 )
-from core.middleware.settings import BOT
-
+from core.middleware.settings import BOT, ADMIN_IDS, DEL_TIME
+from core.utils.tarot import tarot_main
 
 callback_router = Router()
 
@@ -43,6 +44,64 @@ async def callback_soc_profiles(callback: CallbackQuery):
 
     await callback.answer()
     await cmd_soc_profiles(callback.message)
+
+
+@callback_router.callback_query(F.data == 'tarot')
+async def callback_tarot(callback: CallbackQuery):
+    """
+    Handles the 'tarot' callback query. Responds to the user and
+    triggers the tarot layout func.
+
+    :param callback:
+    :return: None
+    """
+
+    await callback.answer()
+
+    message = callback.message
+    chat_id = message.chat.id
+    user_first_name = message.chat.first_name
+
+    stmt = select(User).where(User.chat_id == chat_id)
+
+    async for session in get_async_session():
+        result = await session.execute(stmt)
+        user = result.scalar_one_or_none()
+
+        last_tarot_date = user.last_tarot_date
+        if last_tarot_date:
+            last_tarot_date = last_tarot_date.date()
+
+        today = datetime.now()
+
+        if chat_id in ADMIN_IDS:
+            await BOT.delete_message(chat_id, message.message_id)
+            await sleep(DEL_TIME)
+
+            await tarot_main(message)
+            await cmd_help(message, True)
+        else:
+            if last_tarot_date == today.date():
+                sent_message = await message.answer(
+                    text=f'<u>{user_first_name}</u>, '
+                         f'вы уже сегодня получили расклад, попробуйте завтра!'
+                )
+
+                await record_message_id_to_db(sent_message)
+            else:
+                stmt = update(User).where(
+                    User.chat_id == chat_id
+                ).values(
+                    last_tarot_date=today
+                )
+                await session.execute(stmt)
+                await session.commit()
+
+                await BOT.delete_message(chat_id, message.message_id)
+                await sleep(DEL_TIME)
+
+                await tarot_main(message)
+                await cmd_help(message, True)
 
 
 @callback_router.callback_query(F.data == 'clean')

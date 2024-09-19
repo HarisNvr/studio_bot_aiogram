@@ -7,7 +7,7 @@ from aiogram.types import Message
 from core.database.background_tasks import record_message_id_to_db
 from core.keyboards.clean_keyboard import clean_keyboard
 from core.keyboards.soc_profiles_keyboard import soc_profiles_keyboard
-from core.keyboards.start_keyboard import get_start_keyboard
+from core.keyboards.main_keyboard import get_main_keyboard
 from core.middleware.settings import BOT, DEL_TIME
 from core.middleware.wrappers import check_bd_chat_id, sub_check
 from core.utils.lang_greet import get_lang_greet_text
@@ -31,7 +31,7 @@ async def cmd_start(message: Message):
 
     bot_info = await BOT.get_me()
     bot_name = bot_info.username
-    start_keyboard = get_start_keyboard(message)
+    start_keyboard = get_main_keyboard(message)
 
     sent_message = await message.answer(
         text=f'<b>Здравствуйте, '
@@ -63,11 +63,11 @@ async def cmd_help(message: Message, keep_last_msg: bool = False):
 
     await sleep(DEL_TIME)
 
-    start_keyboard = get_start_keyboard(message)
+    help_keyboard = get_main_keyboard(message)
 
     sent_message = await message.answer(
         get_lang_greet_text(message.chat.first_name),
-        reply_markup=start_keyboard.as_markup()
+        reply_markup=help_keyboard.as_markup()
     )
 
     await record_message_id_to_db(sent_message)

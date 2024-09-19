@@ -4,7 +4,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from core.middleware.settings import ADMIN_IDS
 
 
-def get_start_keyboard(message: Message):
+def get_main_keyboard(message: Message):
     """
     Creates a keyboard that contains buttons for the
     /start command, depending on the requesting user
