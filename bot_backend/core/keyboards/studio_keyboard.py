@@ -4,7 +4,7 @@ studio_keyboard = InlineKeyboardMarkup(inline_keyboard=[
     [
         InlineKeyboardButton(
             text='Подробнее о направлениях',
-            callback_data='studio_directions'
+            callback_data='directions_studio'
         )
     ],
     [

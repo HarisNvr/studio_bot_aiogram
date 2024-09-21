@@ -47,7 +47,7 @@ async def callback_studio(callback: CallbackQuery):
     await cmd_studio(callback.message)
 
 
-@callback_router.callback_query(F.data == 'studio_directions')
+@callback_router.callback_query(F.data == 'directions_studio')
 async def callback_directions(callback: CallbackQuery):
     """
     Handles the 'directions' callback query. Responds to the user and
