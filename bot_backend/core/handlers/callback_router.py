@@ -10,8 +10,9 @@ from core.database.background_tasks import get_user_id, record_message_id_to_db
 from core.database.engine import get_async_session
 from core.database.models import UserMessage, User
 from core.handlers.user_router import (
-    cmd_clean, cmd_help, cmd_soc_profiles
+    cmd_clean, cmd_help, cmd_soc_profiles, cmd_studio
 )
+from core.keyboards.directions_keyboard import directions_keyboard
 from core.middleware.settings import BOT, ADMIN_IDS, DEL_TIME
 from core.utils.tarot import tarot_main
 
@@ -30,6 +31,45 @@ async def callback_help(callback: CallbackQuery):
 
     await callback.answer()
     await cmd_help(callback.message)
+
+
+@callback_router.callback_query(F.data == 'studio')
+async def callback_studio(callback: CallbackQuery):
+    """
+    Handles the 'studio' callback query. Responds to the user and
+    triggers the studio command.
+
+    :param callback:
+    :return: None
+    """
+
+    await callback.answer()
+    await cmd_studio(callback.message)
+
+
+@callback_router.callback_query(F.data == 'studio_directions')
+async def callback_directions(callback: CallbackQuery):
+    """
+    Handles the 'directions' callback query. Responds to the user and
+    provides information about studio directions.
+
+    :param callback:
+    :return: None
+    """
+
+    await callback.answer()
+    message = callback.message
+
+    await BOT.delete_message(message.chat.id, message.message_id)
+    await sleep(DEL_TIME)
+
+    sent_message = await message.answer(
+        text='<b>Выберите <u>направление,</u> о котором хотите '
+             'узнать подробнее:</b>',
+        reply_markup=directions_keyboard
+    )
+
+    await record_message_id_to_db(sent_message)
 
 
 @callback_router.callback_query(F.data == 'soc_profiles')
@@ -83,8 +123,8 @@ async def callback_tarot(callback: CallbackQuery):
         else:
             if last_tarot_date == today.date():
                 sent_message = await message.answer(
-                    text=f'<u>{user_first_name}</u>, '
-                         f'вы уже сегодня получили расклад, попробуйте завтра!'
+                    text='<u>{user_first_name}</u>, '
+                         'вы уже сегодня получили расклад, попробуйте завтра!'
                 )
 
                 await record_message_id_to_db(sent_message)
@@ -121,8 +161,8 @@ async def callback_clean(callback: CallbackQuery):
 @callback_router.callback_query(F.data == 'clean_chat')
 async def callback_clean_chat(callback: CallbackQuery):
     """
-    Handles the 'clean_chat' callback query. Cleans the chat by
-    deleting messages from the database and the chat itself.
+    Handles the 'clean_chat' callback query from cmd_clean function.
+    Cleans the chat by deleting messages from the database and the chat itself.
 
     :param callback:
     :return: None
@@ -147,7 +187,7 @@ async def callback_clean_chat(callback: CallbackQuery):
         await BOT.delete_message(chat_id, message.message_id)
 
         sent_message = await message.answer(
-            text=f'<b>Идёт очистка чата</b> \U0001F9F9'
+            text='<b>Идёт очистка чата</b> \U0001F9F9'
         )
 
         for msg_id in message_ids:
