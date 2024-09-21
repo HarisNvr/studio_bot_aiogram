@@ -8,4 +8,6 @@ RUN pip install -r requirements.txt --no-cache-dir
 
 COPY . .
 
+CMD ["alembic", "upgrade", "head"]
+
 CMD ["python3", "main.py"]
