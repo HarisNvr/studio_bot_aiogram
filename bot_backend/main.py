@@ -7,6 +7,7 @@ from core.database.background_tasks import morning_routine
 from core.handlers.admin_router import admin_router
 from core.handlers.callback_router import callback_router
 from core.handlers.directions_router import directions_router
+from core.handlers.misc_router import misc_router
 from core.handlers.shop_router import shop_router
 from core.handlers.text_router import text_router
 from core.handlers.user_router import user_router
@@ -29,7 +30,8 @@ async def bot_main():
         callback_router,
         shop_router,
         directions_router,
-        text_router
+        text_router,
+        misc_router
     )
 
     try:
