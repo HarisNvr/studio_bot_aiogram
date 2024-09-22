@@ -6,11 +6,12 @@ from aiogram.filters import Command
 from aiogram.types import Message, FSInputFile
 
 from core.database.background_tasks import record_message_id_to_db
-from core.keyboards.clean_keyboard import clean_keyboard
-from core.keyboards.mk_keyboard import mk_keyboard
-from core.keyboards.soc_profiles_keyboard import soc_profiles_keyboard
-from core.keyboards.main_keyboard import get_main_keyboard
-from core.keyboards.studio_keyboard import studio_keyboard
+from core.keyboards.shop_kb import shop_keyboard
+from core.keyboards.clean_kb import clean_keyboard
+from core.keyboards.mk_kb import mk_keyboard
+from core.keyboards.soc_profiles_kb import soc_profiles_keyboard
+from core.keyboards.main_kb import get_main_keyboard
+from core.keyboards.studio_kb import studio_keyboard
 from core.middleware.settings import BOT, DEL_TIME
 from core.middleware.wrappers import check_bd_chat_id, sub_check
 from core.utils.lang_greet import get_lang_greet_text
@@ -62,7 +63,7 @@ async def cmd_help(message: Message, keep_last_msg: bool = False):
     await record_message_id_to_db(message)
 
     if not keep_last_msg:
-        await BOT.delete_message(message.chat.id, message.message_id)
+        await message.delete()
 
     await sleep(DEL_TIME)
 
@@ -86,7 +87,7 @@ async def cmd_studio(message: Message):
     :return:
     """
 
-    await BOT.delete_message(message.chat.id, message.message_id)
+    await message.delete()
     await sleep(DEL_TIME)
 
     photo_path = Path(
@@ -94,8 +95,7 @@ async def cmd_studio(message: Message):
     ).parent.parent.parent / '..' / 'studio_and_directions' / 'studio_img.png'
     studio_photo = FSInputFile(photo_path)
 
-    sent_message = await BOT.send_photo(
-        chat_id=message.chat.id,
+    sent_message = await message.answer_photo(
         photo=studio_photo,
         reply_markup=studio_keyboard,
         caption='<b>Наша мастерская</b> – это то место, '
@@ -116,6 +116,46 @@ async def cmd_studio(message: Message):
     await record_message_id_to_db(sent_message)
 
 
+@user_router.message(Command('shop'))
+@check_bd_chat_id
+async def cmd_shop(message: Message):
+    """
+    Handles the '/shop' command and provides information about the studio shop.
+
+    :param message:
+    :return:
+    """
+
+    await message.delete()
+    await sleep(DEL_TIME)
+
+    photo_path = Path(
+        __file__
+    ).parent.parent.parent / '..' / 'shop_delivery' / 'craft_shop.png'
+    shop_photo = FSInputFile(photo_path)
+
+    sent_message = await message.answer_photo(
+        photo=shop_photo,
+        reply_markup=shop_keyboard,
+        caption='<b>Добро пожаловать в наш '
+                'крафтовый магазин \U00002728</b>'
+                '\n'
+                '\n Здесь вы найдете уникальные и '
+                'качественные изделия ручной работы, '
+                'созданные с любовью и нежностью. '
+                'Мы предлагаем вам широкий ассортимент '
+                'товаров: декор для дома, подарки, '
+                'украшения, сухоцветы и многое другое.'
+                '\n'
+                '\n <b>Мы гарантируем вам:</b> '
+                '<u>высокое качество, '
+                'индивидуальный подход '
+                'и быструю отправку.</u>'
+    )
+
+    await record_message_id_to_db(sent_message)
+
+
 @user_router.message(Command('mk'))
 @check_bd_chat_id
 async def cmd_mk(message: Message):
@@ -126,7 +166,7 @@ async def cmd_mk(message: Message):
     :return:
     """
 
-    await BOT.delete_message(message.chat.id, message.message_id)
+    await message.delete()
     await sleep(DEL_TIME)
 
     mk_photo_path = Path(
@@ -134,8 +174,7 @@ async def cmd_mk(message: Message):
     ).parent.parent.parent / '..' / 'studio_and_directions' / 'offsite_img.png'
     mk_photo = FSInputFile(mk_photo_path)
 
-    sent_message = await BOT.send_photo(
-        chat_id=message.chat.id,
+    sent_message = await message.answer_photo(
         photo=mk_photo,
         reply_markup=mk_keyboard,
         caption='<b>Вы хотите удивить гостей '
@@ -170,7 +209,7 @@ async def cmd_soc_profiles(message: Message):
     :return:
     """
 
-    await BOT.delete_message(message.chat.id, message.message_id)
+    await message.delete()
     await sleep(DEL_TIME)
 
     sent_message = await message.answer(
@@ -191,7 +230,7 @@ async def cmd_clean(message: Message):
     :return:
     """
 
-    await BOT.delete_message(message.chat.id, message.message_id)
+    await message.delete()
     await sleep(DEL_TIME)
 
     sent_message = await message.answer(

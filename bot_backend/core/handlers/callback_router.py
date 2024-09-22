@@ -10,10 +10,10 @@ from core.database.background_tasks import get_user_id, record_message_id_to_db
 from core.database.engine import get_async_session
 from core.database.models import UserMessage, User
 from core.handlers.user_router import (
-    cmd_clean, cmd_help, cmd_soc_profiles, cmd_studio, cmd_mk
+    cmd_clean, cmd_help, cmd_soc_profiles, cmd_studio, cmd_mk, cmd_shop
 )
-from core.keyboards.offsite_directions_keyboard import offsite_keyboard
-from core.keyboards.studio_directions_keyboard import studio_keyboard
+from core.keyboards.offsite_directions_kb import offsite_keyboard
+from core.keyboards.studio_directions_kb import studio_keyboard
 from core.middleware.settings import BOT, ADMIN_IDS, DEL_TIME
 from core.utils.tarot import tarot_main
 
@@ -48,6 +48,20 @@ async def callback_studio(callback: CallbackQuery):
     await cmd_studio(callback.message)
 
 
+@callback_router.callback_query(F.data == 'shop')
+async def callback_shop(callback: CallbackQuery):
+    """
+    Handles the 'shop' callback query. Responds to the user and
+    triggers the shop command.
+
+    :param callback:
+    :return: None
+    """
+
+    await callback.answer()
+    await cmd_shop(callback.message)
+
+
 @callback_router.callback_query(F.data.startswith('directions_'))
 async def callback_directions(callback: CallbackQuery):
     """
@@ -61,7 +75,7 @@ async def callback_directions(callback: CallbackQuery):
     await callback.answer()
     message = callback.message
 
-    await BOT.delete_message(message.chat.id, message.message_id)
+    await message.delete()
     await sleep(DEL_TIME)
 
     if callback.data == 'directions_studio':
@@ -135,7 +149,7 @@ async def callback_tarot(callback: CallbackQuery):
         today = datetime.now()
 
         if chat_id in ADMIN_IDS:
-            await BOT.delete_message(chat_id, message.message_id)
+            await callback.message.delete()
             await sleep(DEL_TIME)
 
             await tarot_main(message)
@@ -143,7 +157,7 @@ async def callback_tarot(callback: CallbackQuery):
         else:
             if last_tarot_date == today.date():
                 sent_message = await message.answer(
-                    text='<u>{user_first_name}</u>, '
+                    text=f'<u>{user_first_name}</u>, '
                          'вы уже сегодня получили расклад, попробуйте завтра!'
                 )
 
@@ -157,7 +171,7 @@ async def callback_tarot(callback: CallbackQuery):
                 await session.execute(stmt)
                 await session.commit()
 
-                await BOT.delete_message(chat_id, message.message_id)
+                await callback.message.delete()
                 await sleep(DEL_TIME)
 
                 await tarot_main(message)
@@ -204,7 +218,7 @@ async def callback_clean_chat(callback: CallbackQuery):
         result = await session.execute(stmt)
         message_ids = result.scalars().all()
 
-        await BOT.delete_message(chat_id, message.message_id)
+        await callback.message.delete()
 
         sent_message = await message.answer(
             text='<b>Идёт очистка чата</b> \U0001F9F9'

@@ -7,6 +7,7 @@ from core.database.background_tasks import morning_routine
 from core.handlers.admin_router import admin_router
 from core.handlers.callback_router import callback_router
 from core.handlers.directions_router import directions_router
+from core.handlers.shop_router import shop_router
 from core.handlers.user_router import user_router
 from core.middleware.settings import BOT
 
@@ -25,6 +26,7 @@ async def bot_main():
         admin_router,
         user_router,
         callback_router,
+        shop_router,
         directions_router
     )
 

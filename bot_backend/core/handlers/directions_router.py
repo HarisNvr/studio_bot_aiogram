@@ -5,8 +5,8 @@ from aiogram import F, Router
 from aiogram.types import CallbackQuery, FSInputFile
 
 from core.database.background_tasks import record_message_id_to_db
-from core.keyboards.studio_offsite_keyboards import get_studio_offsite_keyboard
-from core.middleware.settings import BOT, DEL_TIME
+from core.keyboards.studio_offsite_kb import get_studio_offsite_keyboard
+from core.middleware.settings import DEL_TIME
 
 ADDITIONAL_INFO = (
     '<u>Уточняйте актуальное расписание, '
@@ -35,7 +35,7 @@ async def callback_epoxy(callback: CallbackQuery):
     await callback.answer()
     message = callback.message
 
-    await BOT.delete_message(message.chat.id, message.message_id)
+    await callback.message.delete()
     await sleep(DEL_TIME)
 
     photo_path = Path(
@@ -44,8 +44,7 @@ async def callback_epoxy(callback: CallbackQuery):
     epoxy_photo = FSInputFile(photo_path)
     epoxy_keyboard = get_studio_offsite_keyboard(False)
 
-    sent_message = await BOT.send_photo(
-        chat_id=message.chat.id,
+    sent_message = await message.answer_photo(
         photo=epoxy_photo,
         reply_markup=epoxy_keyboard,
         caption='<b>Эпоксидная смола</b> - это '
@@ -97,7 +96,7 @@ async def callback_gips(callback: CallbackQuery):
     await callback.answer()
     message = callback.message
 
-    await BOT.delete_message(message.chat.id, message.message_id)
+    await callback.message.delete()
     await sleep(DEL_TIME)
 
     photo_path = Path(
@@ -112,8 +111,7 @@ async def callback_gips(callback: CallbackQuery):
         gips_keyboard = get_studio_offsite_keyboard(False)
         additional_info = ADDITIONAL_INFO
 
-    sent_message = await BOT.send_photo(
-        chat_id=message.chat.id,
+    sent_message = await message.answer_photo(
         photo=gips_photo,
         reply_markup=gips_keyboard,
         caption='<b>Гипс</b> - это универсальный '
@@ -149,7 +147,7 @@ async def callback_sketching(callback: CallbackQuery):
     await callback.answer()
     message = callback.message
 
-    await BOT.delete_message(message.chat.id, message.message_id)
+    await callback.message.delete()
     await sleep(DEL_TIME)
 
     photo_path = Path(
@@ -158,8 +156,7 @@ async def callback_sketching(callback: CallbackQuery):
     sketching_photo = FSInputFile(photo_path)
     sketching_keyboard = get_studio_offsite_keyboard(False)
 
-    sent_message = await BOT.send_photo(
-        chat_id=message.chat.id,
+    sent_message = await message.answer_photo(
         photo=sketching_photo,
         reply_markup=sketching_keyboard,
         caption='<b>Скетчинг</b> - это техника быстрого '
@@ -205,7 +202,7 @@ async def callback_tie_dye(callback: CallbackQuery):
     await callback.answer()
     message = callback.message
 
-    await BOT.delete_message(message.chat.id, message.message_id)
+    await callback.message.delete()
     await sleep(DEL_TIME)
 
     photo_path = Path(
@@ -220,8 +217,7 @@ async def callback_tie_dye(callback: CallbackQuery):
         tie_dye_keyboard = get_studio_offsite_keyboard(False)
         additional_info = ADDITIONAL_INFO
 
-    sent_message = await BOT.send_photo(
-        chat_id=message.chat.id,
+    sent_message = await message.answer_photo(
         photo=tie_dye_photo,
         reply_markup=tie_dye_keyboard,
         caption='<b>Тай-дай</b> - это техника '
@@ -260,7 +256,7 @@ async def callback_custom_cloth(callback: CallbackQuery):
     await callback.answer()
     message = callback.message
 
-    await BOT.delete_message(message.chat.id, message.message_id)
+    await callback.message.delete()
     await sleep(DEL_TIME)
 
     photo_path = Path(
@@ -269,8 +265,7 @@ async def callback_custom_cloth(callback: CallbackQuery):
     custom_cloth_photo = FSInputFile(photo_path)
     custom_cloth_keyboard = get_studio_offsite_keyboard(False)
 
-    sent_message = await BOT.send_photo(
-        chat_id=message.chat.id,
+    sent_message = await message.answer_photo(
         photo=custom_cloth_photo,
         reply_markup=custom_cloth_keyboard,
         caption='<b>Роспись одежды</b> - это творческий '
@@ -323,7 +318,7 @@ async def callback_candles(callback: CallbackQuery):
     await callback.answer()
     message = callback.message
 
-    await BOT.delete_message(message.chat.id, message.message_id)
+    await callback.message.delete()
     await sleep(DEL_TIME)
 
     photo_path = Path(
@@ -338,8 +333,7 @@ async def callback_candles(callback: CallbackQuery):
         candles_keyboard = get_studio_offsite_keyboard(False)
         additional_info = ADDITIONAL_INFO
 
-    sent_message = await BOT.send_photo(
-        chat_id=message.chat.id,
+    sent_message = await message.answer_photo(
         photo=candles_photo,
         reply_markup=candles_keyboard,
         caption='<b>Ароматические свечи</b> - это не '

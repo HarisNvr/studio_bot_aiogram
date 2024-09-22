@@ -9,12 +9,6 @@ studio_keyboard = InlineKeyboardMarkup(inline_keyboard=[
     ],
     [
         InlineKeyboardButton(
-            text='Назад',
-            callback_data='help'
-        )
-    ],
-    [
-        InlineKeyboardButton(
             text='Наша студия в 2GIS',
             url='https://go.2gis.com/8od46'
         )
@@ -23,6 +17,12 @@ studio_keyboard = InlineKeyboardMarkup(inline_keyboard=[
         InlineKeyboardButton(
             text='\U000026A1 Записаться на МК \U000026A1',
             url='https://t.me/elenitsa17'
+        )
+    ],
+[
+        InlineKeyboardButton(
+            text='Назад',
+            callback_data='help'
         )
     ]
 ])
