@@ -7,6 +7,7 @@ from aiogram.types import Message, FSInputFile
 
 from core.database.background_tasks import record_message_id_to_db
 from core.keyboards.clean_keyboard import clean_keyboard
+from core.keyboards.mk_keyboard import mk_keyboard
 from core.keyboards.soc_profiles_keyboard import soc_profiles_keyboard
 from core.keyboards.main_keyboard import get_main_keyboard
 from core.keyboards.studio_keyboard import studio_keyboard
@@ -88,10 +89,10 @@ async def cmd_studio(message: Message):
     await BOT.delete_message(message.chat.id, message.message_id)
     await sleep(DEL_TIME)
 
-    studio_photo_path = Path(
+    photo_path = Path(
         __file__
     ).parent.parent.parent / '..' / 'studio_and_directions' / 'studio_img.png'
-    studio_photo = FSInputFile(studio_photo_path)
+    studio_photo = FSInputFile(photo_path)
 
     sent_message = await BOT.send_photo(
         chat_id=message.chat.id,
@@ -110,6 +111,50 @@ async def cmd_studio(message: Message):
                 'с. Цемдолина, ул. Цемесская, д. 10'
                 '\n\U00002600 г. Анапа, с. Витязево, '
                 'ул. Курганная, д. 29</b>'
+    )
+
+    await record_message_id_to_db(sent_message)
+
+
+@user_router.message(Command('mk'))
+@check_bd_chat_id
+async def cmd_mk(message: Message):
+    """
+    Handles the '/mk' command and provides information about offsite workshops.
+
+    :param message:
+    :return:
+    """
+
+    await BOT.delete_message(message.chat.id, message.message_id)
+    await sleep(DEL_TIME)
+
+    mk_photo_path = Path(
+        __file__
+    ).parent.parent.parent / '..' / 'studio_and_directions' / 'offsite_img.png'
+    mk_photo = FSInputFile(mk_photo_path)
+
+    sent_message = await BOT.send_photo(
+        chat_id=message.chat.id,
+        photo=mk_photo,
+        reply_markup=mk_keyboard,
+        caption='<b>Вы хотите удивить гостей '
+                'творческим мастер–классом?</b> '
+                '\n'
+                '\n Наша студия готова приехать к вам c '
+                'оборудованием и материалами '
+                'по любой теме '
+                'из нашего каталога: свечеварение, '
+                'рисование, '
+                'роспись одежды и другие. '
+                'Мы обеспечим все '
+                'необходимое для проведения МК в любом '
+                'месте – в помещении или '
+                'на свежем воздухе. '
+                '\n'
+                '\n <u>Все гости получат новые '
+                'знания, навыки '
+                'и подарки, сделанные своими руками!</u>'
     )
 
     await record_message_id_to_db(sent_message)

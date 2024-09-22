@@ -10,9 +10,10 @@ from core.database.background_tasks import get_user_id, record_message_id_to_db
 from core.database.engine import get_async_session
 from core.database.models import UserMessage, User
 from core.handlers.user_router import (
-    cmd_clean, cmd_help, cmd_soc_profiles, cmd_studio
+    cmd_clean, cmd_help, cmd_soc_profiles, cmd_studio, cmd_mk
 )
-from core.keyboards.directions_keyboard import directions_keyboard
+from core.keyboards.offsite_directions_keyboard import offsite_keyboard
+from core.keyboards.studio_directions_keyboard import studio_keyboard
 from core.middleware.settings import BOT, ADMIN_IDS, DEL_TIME
 from core.utils.tarot import tarot_main
 
@@ -47,11 +48,11 @@ async def callback_studio(callback: CallbackQuery):
     await cmd_studio(callback.message)
 
 
-@callback_router.callback_query(F.data == 'directions_studio')
+@callback_router.callback_query(F.data.startswith('directions_'))
 async def callback_directions(callback: CallbackQuery):
     """
-    Handles the 'directions' callback query. Responds to the user and
-    provides information about studio directions.
+    Handles the 'directions_studio' or 'directions_offsite' callback query.
+    Responds to the user and provides information about studio directions.
 
     :param callback:
     :return: None
@@ -63,13 +64,32 @@ async def callback_directions(callback: CallbackQuery):
     await BOT.delete_message(message.chat.id, message.message_id)
     await sleep(DEL_TIME)
 
+    if callback.data == 'directions_studio':
+        keyboard = studio_keyboard
+    else:
+        keyboard = offsite_keyboard
+
     sent_message = await message.answer(
         text='<b>Выберите <u>направление,</u> о котором хотите '
              'узнать подробнее:</b>',
-        reply_markup=directions_keyboard
+        reply_markup=keyboard
     )
 
     await record_message_id_to_db(sent_message)
+
+
+@callback_router.callback_query(F.data == 'mk')
+async def callback_directions_offsite(callback: CallbackQuery):
+    """
+    Handles the 'directions_offsite' callback query. Responds to the user and
+    provides information about offsite directions.
+
+    :param callback:
+    :return: None
+    """
+
+    await callback.answer()
+    await cmd_mk(callback.message)
 
 
 @callback_router.callback_query(F.data == 'soc_profiles')

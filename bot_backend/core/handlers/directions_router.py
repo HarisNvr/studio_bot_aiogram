@@ -38,10 +38,10 @@ async def callback_epoxy(callback: CallbackQuery):
     await BOT.delete_message(message.chat.id, message.message_id)
     await sleep(DEL_TIME)
 
-    epoxy_photo_path = Path(
+    photo_path = Path(
         __file__
     ).parent.parent.parent / '..' / 'studio_and_directions' / 'epoxy_img.png'
-    epoxy_photo = FSInputFile(epoxy_photo_path)
+    epoxy_photo = FSInputFile(photo_path)
     epoxy_keyboard = get_studio_offsite_keyboard(False)
 
     sent_message = await BOT.send_photo(
@@ -84,7 +84,7 @@ async def callback_epoxy(callback: CallbackQuery):
     await record_message_id_to_db(sent_message)
 
 
-@directions_router.callback_query(F.data == ('gips' or 'gips_offsite'))
+@directions_router.callback_query(F.data.startswith('gips_'))
 async def callback_gips(callback: CallbackQuery):
     """
     Handles the 'gips' or 'gips_offsite' callback query.
@@ -100,10 +100,10 @@ async def callback_gips(callback: CallbackQuery):
     await BOT.delete_message(message.chat.id, message.message_id)
     await sleep(DEL_TIME)
 
-    gips_photo_path = Path(
+    photo_path = Path(
         __file__
     ).parent.parent.parent / '..' / 'studio_and_directions' / 'gips_img.png'
-    gips_photo = FSInputFile(gips_photo_path)
+    gips_photo = FSInputFile(photo_path)
 
     if callback.data == 'gips_offsite':
         gips_keyboard = get_studio_offsite_keyboard(True)
@@ -152,10 +152,10 @@ async def callback_sketching(callback: CallbackQuery):
     await BOT.delete_message(message.chat.id, message.message_id)
     await sleep(DEL_TIME)
 
-    sketching_photo_path = (Path(
+    photo_path = Path(
         __file__
-    ).parent.parent.parent / '..' / 'studio_and_directions' / 'sketching_img.png')
-    sketching_photo = FSInputFile(sketching_photo_path)
+    ).parent.parent.parent / '..' / 'studio_and_directions' / 'sketch_img.png'
+    sketching_photo = FSInputFile(photo_path)
     sketching_keyboard = get_studio_offsite_keyboard(False)
 
     sent_message = await BOT.send_photo(
@@ -192,7 +192,7 @@ async def callback_sketching(callback: CallbackQuery):
     await record_message_id_to_db(sent_message)
 
 
-@directions_router.callback_query(F.data == ('tie_dye' or 'tie_dye_offsite'))
+@directions_router.callback_query(F.data.startswith('tie_dye_'))
 async def callback_tie_dye(callback: CallbackQuery):
     """
     Handles the 'tie_dye' or 'tie_dye_offsite' callback query.
@@ -208,10 +208,10 @@ async def callback_tie_dye(callback: CallbackQuery):
     await BOT.delete_message(message.chat.id, message.message_id)
     await sleep(DEL_TIME)
 
-    tie_dye_photo_path = Path(
+    photo_path = Path(
         __file__
     ).parent.parent.parent / '..' / 'studio_and_directions' / 'tie_dye_img.png'
-    tie_dye_photo = FSInputFile(tie_dye_photo_path)
+    tie_dye_photo = FSInputFile(photo_path)
 
     if callback.data == 'tie_dye_offsite':
         tie_dye_keyboard = get_studio_offsite_keyboard(True)
@@ -263,10 +263,10 @@ async def callback_custom_cloth(callback: CallbackQuery):
     await BOT.delete_message(message.chat.id, message.message_id)
     await sleep(DEL_TIME)
 
-    custom_cloth_photo_path = Path(
+    photo_path = Path(
         __file__
-    ).parent.parent.parent / '..' / 'studio_and_directions' / 'custom_cloth_img.png'
-    custom_cloth_photo = FSInputFile(custom_cloth_photo_path)
+    ).parent.parent.parent / '..' / 'studio_and_directions' / 'cloth_img.png'
+    custom_cloth_photo = FSInputFile(photo_path)
     custom_cloth_keyboard = get_studio_offsite_keyboard(False)
 
     sent_message = await BOT.send_photo(
@@ -310,7 +310,7 @@ async def callback_custom_cloth(callback: CallbackQuery):
     await record_message_id_to_db(sent_message)
 
 
-@directions_router.callback_query(F.data == ('candles' or 'candles_offsite'))
+@directions_router.callback_query(F.data.startswith('candles_'))
 async def callback_candles(callback: CallbackQuery):
     """
     Handles the 'candles' or 'candles_offsite' callback query.
@@ -326,10 +326,10 @@ async def callback_candles(callback: CallbackQuery):
     await BOT.delete_message(message.chat.id, message.message_id)
     await sleep(DEL_TIME)
 
-    candles_photo_path = Path(
+    photo_path = Path(
         __file__
     ).parent.parent.parent / '..' / 'studio_and_directions' / 'candles_img.png'
-    candles_photo = FSInputFile(candles_photo_path)
+    candles_photo = FSInputFile(photo_path)
 
     if callback.data == 'candles_offsite':
         candles_keyboard = get_studio_offsite_keyboard(True)

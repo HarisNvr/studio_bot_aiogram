@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-directions_keyboard = InlineKeyboardMarkup(inline_keyboard=[
+studio_keyboard = InlineKeyboardMarkup(inline_keyboard=[
     [
         InlineKeyboardButton(
             text='Эпоксидная смола',

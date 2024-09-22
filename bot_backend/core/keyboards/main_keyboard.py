@@ -28,7 +28,7 @@ def get_main_keyboard(message: Message):
         [
             InlineKeyboardButton(
                 text='Выездные МК  \U0001F30D',
-                callback_data='offsite_workshops'
+                callback_data='mk'
             )
         ],
         [
