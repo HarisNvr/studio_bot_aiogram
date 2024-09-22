@@ -13,6 +13,7 @@ from core.database.models import User
 from core.middleware.settings import (
     ADMIN_IDS, BOT, CHANNEL_ID, TG_CHANNEL, DEL_TIME
 )
+from core.utils.chepuha import chepuha
 
 
 def check_bd_chat_id(function):
@@ -64,18 +65,7 @@ def check_is_admin(function):
         if message.chat.id in ADMIN_IDS:
             return await function(message, *args, **kwargs)
         else:
-            sent_message = await message.answer(
-                text=(
-                    f'Извините <u>{message.from_user.first_name}</u>, '
-                    'я вас не понимаю.'
-                    '\n'
-                    '\nПопробуйте написать /help для возврата в '
-                    'главное меню или воспользуйтесь кнопкой "Меню" '
-                    'около окна ввода сообщения'
-                )
-            )
-
-            await record_message_id_to_db(sent_message)
+            await chepuha(message)
 
     return wrapper
 
@@ -121,6 +111,7 @@ def sub_check(function):
             await session.commit()
 
         if not is_subscribed and message.text == '/start':
+            await sleep(DEL_TIME)
             sent_message = await BOT.send_message(
                 chat_id=message.chat.id,
                 text='<b>Я заметил, что вы не подписаны на наш ТГ канал, '

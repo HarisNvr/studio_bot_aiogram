@@ -11,6 +11,20 @@ from core.middleware.settings import DEL_TIME
 shop_router = Router()
 
 
+def get_file(file_name: str):
+    """
+    Prepare file for sending to user.
+
+    :param file_name: File full name with extension.
+    :return:
+    """
+
+    path = Path(
+        __file__
+    ).parent.parent.parent / '..' / 'shop_delivery' / file_name
+    return FSInputFile(path)
+
+
 @shop_router.callback_query(F.data == 'catalog')
 async def callback_catalog(callback: CallbackQuery):
     """
@@ -23,10 +37,7 @@ async def callback_catalog(callback: CallbackQuery):
 
     await callback.answer()
 
-    pdf_path = Path(
-        __file__
-    ).parent.parent.parent / '..' / 'shop_delivery' / 'CSA_catalog.pdf'
-    pdf_file = FSInputFile(path=pdf_path)
+    pdf_file = get_file('CSA_catalog.pdf')
 
     sent_message = await callback.message.answer_document(
         document=pdf_file,
@@ -55,10 +66,7 @@ async def callback_shipment(callback: CallbackQuery):
     await message.delete()
     await sleep(DEL_TIME)
 
-    photo_path = Path(
-        __file__
-    ).parent.parent.parent / '..' / 'shop_delivery' / 'shipment.jpg'
-    shipment_photo = FSInputFile(path=photo_path)
+    shipment_photo = get_file('shipment.jpg')
 
     sent_message = await message.answer_photo(
         photo=shipment_photo,
@@ -106,10 +114,7 @@ async def callback_pay(callback: CallbackQuery):
     await message.delete()
     await sleep(DEL_TIME)
 
-    photo_path = Path(
-        __file__
-    ).parent.parent.parent / '..' / 'shop_delivery' / 'payment.png'
-    payment_photo = FSInputFile(path=photo_path)
+    payment_photo = get_file('payment.png')
 
     sent_message = await message.answer_photo(
         photo=payment_photo,
@@ -152,10 +157,7 @@ async def callback_order(callback: CallbackQuery):
     await message.delete()
     await sleep(DEL_TIME)
 
-    photo_path = Path(
-        __file__
-    ).parent.parent.parent / '..' / 'shop_delivery' / 'ordering.jpg'
-    ordering_photo = FSInputFile(path=photo_path)
+    ordering_photo = get_file('ordering.jpg')
 
     sent_message = await message.answer_photo(
         photo=ordering_photo,

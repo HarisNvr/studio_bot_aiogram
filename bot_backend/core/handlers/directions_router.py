@@ -19,6 +19,21 @@ ADDITIONAL_INFO_OFFSITE = (
     'уточняйте у мастера!</u>'
 )
 
+
+def get_photo(photo_name: str):
+    """
+    Prepare photo for sending to user.
+
+    :param photo_name: Photo full name with extension.
+    :return:
+    """
+
+    path = Path(
+        __file__
+    ).parent.parent.parent / '..' / 'studio_and_directions' / photo_name
+    return FSInputFile(path)
+
+
 directions_router = Router()
 
 
@@ -38,10 +53,7 @@ async def callback_epoxy(callback: CallbackQuery):
     await callback.message.delete()
     await sleep(DEL_TIME)
 
-    photo_path = Path(
-        __file__
-    ).parent.parent.parent / '..' / 'studio_and_directions' / 'epoxy_img.png'
-    epoxy_photo = FSInputFile(photo_path)
+    epoxy_photo = get_photo('epoxy_img.png')
     epoxy_keyboard = get_studio_offsite_keyboard(False)
 
     sent_message = await message.answer_photo(
@@ -83,7 +95,7 @@ async def callback_epoxy(callback: CallbackQuery):
     await record_message_id_to_db(sent_message)
 
 
-@directions_router.callback_query(F.data.startswith('gips_'))
+@directions_router.callback_query(F.data.startswith('gips'))
 async def callback_gips(callback: CallbackQuery):
     """
     Handles the 'gips' or 'gips_offsite' callback query.
@@ -99,10 +111,7 @@ async def callback_gips(callback: CallbackQuery):
     await callback.message.delete()
     await sleep(DEL_TIME)
 
-    photo_path = Path(
-        __file__
-    ).parent.parent.parent / '..' / 'studio_and_directions' / 'gips_img.png'
-    gips_photo = FSInputFile(photo_path)
+    gips_photo = get_photo('gips_img.png')
 
     if callback.data == 'gips_offsite':
         gips_keyboard = get_studio_offsite_keyboard(True)
@@ -150,10 +159,7 @@ async def callback_sketching(callback: CallbackQuery):
     await callback.message.delete()
     await sleep(DEL_TIME)
 
-    photo_path = Path(
-        __file__
-    ).parent.parent.parent / '..' / 'studio_and_directions' / 'sketch_img.png'
-    sketching_photo = FSInputFile(photo_path)
+    sketching_photo = get_photo('sketch_img.png')
     sketching_keyboard = get_studio_offsite_keyboard(False)
 
     sent_message = await message.answer_photo(
@@ -189,7 +195,7 @@ async def callback_sketching(callback: CallbackQuery):
     await record_message_id_to_db(sent_message)
 
 
-@directions_router.callback_query(F.data.startswith('tie_dye_'))
+@directions_router.callback_query(F.data.startswith('tie_dye'))
 async def callback_tie_dye(callback: CallbackQuery):
     """
     Handles the 'tie_dye' or 'tie_dye_offsite' callback query.
@@ -205,10 +211,7 @@ async def callback_tie_dye(callback: CallbackQuery):
     await callback.message.delete()
     await sleep(DEL_TIME)
 
-    photo_path = Path(
-        __file__
-    ).parent.parent.parent / '..' / 'studio_and_directions' / 'tie_dye_img.png'
-    tie_dye_photo = FSInputFile(photo_path)
+    tie_dye_photo = get_photo('tie_dye_img.png')
 
     if callback.data == 'tie_dye_offsite':
         tie_dye_keyboard = get_studio_offsite_keyboard(True)
@@ -259,10 +262,7 @@ async def callback_custom_cloth(callback: CallbackQuery):
     await callback.message.delete()
     await sleep(DEL_TIME)
 
-    photo_path = Path(
-        __file__
-    ).parent.parent.parent / '..' / 'studio_and_directions' / 'cloth_img.png'
-    custom_cloth_photo = FSInputFile(photo_path)
+    custom_cloth_photo = get_photo('cloth_img.png')
     custom_cloth_keyboard = get_studio_offsite_keyboard(False)
 
     sent_message = await message.answer_photo(
@@ -305,7 +305,7 @@ async def callback_custom_cloth(callback: CallbackQuery):
     await record_message_id_to_db(sent_message)
 
 
-@directions_router.callback_query(F.data.startswith('candles_'))
+@directions_router.callback_query(F.data.startswith('candles'))
 async def callback_candles(callback: CallbackQuery):
     """
     Handles the 'candles' or 'candles_offsite' callback query.
@@ -321,10 +321,7 @@ async def callback_candles(callback: CallbackQuery):
     await callback.message.delete()
     await sleep(DEL_TIME)
 
-    photo_path = Path(
-        __file__
-    ).parent.parent.parent / '..' / 'studio_and_directions' / 'candles_img.png'
-    candles_photo = FSInputFile(photo_path)
+    candles_photo = get_photo('candles_img.png')
 
     if callback.data == 'candles_offsite':
         candles_keyboard = get_studio_offsite_keyboard(True)
