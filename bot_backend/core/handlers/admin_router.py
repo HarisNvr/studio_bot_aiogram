@@ -14,6 +14,7 @@ from core.keyboards.proportiom_kb import proportion_keyboard
 from core.middleware.fsm import ProportionStates
 from core.middleware.settings import DEL_TIME, BOT
 from core.middleware.wrappers import check_is_admin
+from core.utils.broadcast import start_broadcast
 
 admin_router = Router()
 
@@ -69,6 +70,21 @@ async def send_user_count(message: Message):
 
     await sleep(3.5)
     await BOT.delete_message(message.chat.id, sent_message.message_id)
+
+
+@admin_router.message(Command('broadcast'))
+@check_is_admin
+async def cmd_broadcast(message: Message, state: FSMContext):
+    """
+    Handles the 'broadcast' command. Responds to the admin-user and starts a
+    broadcast sequence.
+
+    :param state:
+    :param message:
+    :return: None
+    """
+
+    await start_broadcast(message, state=state)
 
 
 @admin_router.message(Command('proportions'))

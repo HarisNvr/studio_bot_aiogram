@@ -12,6 +12,7 @@ from core.handlers.shop_router import shop_router
 from core.handlers.text_router import text_router
 from core.handlers.user_router import user_router
 from core.middleware.settings import BOT
+from core.utils.broadcast import broadcast_router
 
 
 async def bot_main():
@@ -26,6 +27,7 @@ async def bot_main():
     dp.startup.register(morning_routine)
     dp.include_routers(
         admin_router,
+        broadcast_router,
         user_router,
         callback_router,
         shop_router,
