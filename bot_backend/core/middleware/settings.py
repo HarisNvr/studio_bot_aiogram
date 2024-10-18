@@ -9,6 +9,15 @@ load_dotenv()
 
 
 def get_admin_ids():
+    """
+    Fetches and returns a list of admin IDs from the environment variable
+    'ADMIN_IDS'. The 'ADMIN_IDS' environment variable is expected to be a
+    comma-separated string of numeric admin IDs, which are then converted
+    to integers.
+
+    :return: List of admin IDs as integers.
+    """
+
     admin_ids = []
     for ADMIN_ID in (getenv('ADMIN_IDS').split(',')):
         admin_ids.append(int(ADMIN_ID))
@@ -42,8 +51,6 @@ POSTGRES_PASSWORD = getenv('POSTGRES_PASSWORD')
 POSTGRES_DB = getenv('POSTGRES_DB')
 DB_HOST = getenv('DB_HOST')
 TZ = timezone(getenv('TZ'))
-MIGRATE = getenv('MIGRATE', '').lower() == 'true'
-COMMIT_MESSAGE = getenv('COMMIT_MESSAGE')
 
 DATABASE_URL = (
     f'postgresql+asyncpg://{POSTGRES_USER}:'
