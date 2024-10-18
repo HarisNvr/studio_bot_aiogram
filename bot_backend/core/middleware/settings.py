@@ -3,6 +3,7 @@ from os import getenv
 from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
 from dotenv import load_dotenv
+from pytz import timezone
 
 load_dotenv()
 
@@ -40,6 +41,7 @@ POSTGRES_USER = getenv('POSTGRES_USER')
 POSTGRES_PASSWORD = getenv('POSTGRES_PASSWORD')
 POSTGRES_DB = getenv('POSTGRES_DB')
 DB_HOST = getenv('DB_HOST')
+TZ = timezone(getenv('TZ'))
 MIGRATE = getenv('MIGRATE', '').lower() == 'true'
 COMMIT_MESSAGE = getenv('COMMIT_MESSAGE')
 

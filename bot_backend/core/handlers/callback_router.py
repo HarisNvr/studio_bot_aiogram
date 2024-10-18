@@ -14,7 +14,7 @@ from core.handlers.user_router import (
 )
 from core.keyboards.offsite_directions_kb import offsite_keyboard
 from core.keyboards.studio_directions_kb import studio_keyboard
-from core.middleware.settings import BOT, ADMIN_IDS, DEL_TIME
+from core.middleware.settings import BOT, ADMIN_IDS, DEL_TIME, TZ
 from core.utils.tarot import tarot_main
 
 callback_router = Router()
@@ -146,7 +146,7 @@ async def callback_tarot(callback: CallbackQuery):
         if last_tarot_date:
             last_tarot_date = last_tarot_date.date()
 
-        today = datetime.now()
+        today = datetime.now(TZ)
 
         if chat_id in ADMIN_IDS:
             await callback.message.delete()

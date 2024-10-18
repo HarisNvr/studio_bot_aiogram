@@ -3,6 +3,8 @@ from datetime import datetime
 from sqlalchemy import TIMESTAMP, Boolean, ForeignKey, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
+from core.middleware.settings import TZ
+
 
 class Base(DeclarativeBase):
     """Base class for declarative models.
@@ -80,7 +82,7 @@ class UserMessage(Base):
     message_id: Mapped[int] = mapped_column()
     message_date: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True),
-        default=datetime.now,
+        default=lambda: datetime.now(TZ),
         nullable=False,
     )
 

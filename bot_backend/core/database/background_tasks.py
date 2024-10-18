@@ -5,6 +5,7 @@ from sqlalchemy import delete, select, update, insert, func
 
 from core.database.engine import get_async_session
 from core.database.models import UserMessage, User
+from core.middleware.settings import TZ
 
 
 async def morning_routine():
@@ -15,7 +16,7 @@ async def morning_routine():
     :return: Nothing
     """
 
-    threshold = datetime.now() - timedelta(hours=48)
+    threshold = datetime.now(TZ) - timedelta(hours=48)
     stmt = delete(UserMessage).where(
         UserMessage.message_date < threshold
     )
