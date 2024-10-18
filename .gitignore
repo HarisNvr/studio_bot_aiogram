@@ -142,8 +142,4 @@ dmypy.json
 
 # Local History for Visual Studio Code
 .history/
-
 .mypy_cache
-
-# папки со статикой и медиа
-bot_backend/alembic/versions/*
