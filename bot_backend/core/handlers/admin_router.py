@@ -64,6 +64,7 @@ async def send_user_count(message: Message):
     count = await get_users_count()
 
     await message.delete()
+    await sleep(DEL_TIME)
 
     sent_message = await message.answer(
         text=f'Количество пользователей в БД: {count}'
