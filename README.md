@@ -61,32 +61,9 @@ SUPPORT=https://support.yoursite.com  # Ссылка на страницу по�
 ORG_NAME=ACME_CORP  # Название вашей организации
 CHANNEL_ID=  # Telegram_ID вашего канала
 ```
-- Создать и активировать виртуальное окружение:
-    ### Windows:
-    ```
-    python -m venv venv
-    source venv/Scripts/activate
-    ```
-    ### Linux:
-    ```
-    python3 -m venv venv
-    source venv/bin/activate
-    ```
-- Перейти в директорию бэкенда бота:
-    ```
-    cd bot_backend/
-    ``` 
-    - Установить зависимости:
-    ```
-    pip install -r requirements.txt
-    ```
-    - Создать миграции Alembic:
-    ```
-    alembic revision --autogenerate -m 'initial'
-    ```
+
 - Запустить Docker compose:
 ```
-cd ..
 docker compose up -d
 ```
 **Бот при запуске сам проверит актуальность схемы в Postgre и применит миграции, если необходимо.**
