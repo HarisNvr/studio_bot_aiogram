@@ -21,4 +21,3 @@ class BroadcastStates(StatesGroup):
     """
 
     broadcast_message = State()
-

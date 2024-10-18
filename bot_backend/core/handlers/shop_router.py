@@ -15,8 +15,8 @@ def get_file(file_name: str):
     """
     Prepare file for sending to user.
 
-    :param file_name: File full name with extension.
-    :return:
+    :param file_name: File's full name with extension.
+    :return: An FSInputFile object containing the file.
     """
 
     path = Path(
@@ -31,7 +31,8 @@ async def callback_catalog(callback: CallbackQuery):
     Handles the 'catalog' callback query. Responds to the user and
     sends a PDF catalog to a user.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -56,7 +57,8 @@ async def callback_shipment(callback: CallbackQuery):
     Handles the 'shipment' callback query. Responds to the user and
     sends the shipment information.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -104,7 +106,8 @@ async def callback_pay(callback: CallbackQuery):
     Handles the 'pay' callback query. Responds to the user and
     sends the information about paying.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -147,7 +150,8 @@ async def callback_order(callback: CallbackQuery):
     Handles the 'order' callback query. Responds to the user and
     sends information about order process.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 

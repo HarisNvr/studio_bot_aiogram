@@ -14,13 +14,20 @@ async def super_secret_func(message: Message):
     """
     TOP SECRET!!!
 
-    :param message:
-    :return: None
+    :param message: Don't look here!
+    :return: I'm serious! Go away!
     """
 
     await record_message_id_to_db(message)
 
     def get_photo(photo_name: str):
+        """
+        Prepare file for sending to user.
+
+        :param photo_name: Photo's full name with extension.
+        :return: An FSInputFile object containing the photo.
+        """
+
         path = Path(
             __file__
         ).parent.parent.parent / '..' / 'easter_eggs' / photo_name

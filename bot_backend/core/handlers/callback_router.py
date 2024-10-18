@@ -26,7 +26,8 @@ async def callback_help(callback: CallbackQuery):
     Handles the 'help' callback query. Responds to the user and
     triggers the help command.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -40,7 +41,8 @@ async def callback_studio(callback: CallbackQuery):
     Handles the 'studio' callback query. Responds to the user and
     triggers the studio command.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -54,7 +56,8 @@ async def callback_shop(callback: CallbackQuery):
     Handles the 'shop' callback query. Responds to the user and
     triggers the shop command.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -68,7 +71,8 @@ async def callback_directions(callback: CallbackQuery):
     Handles the 'directions_studio' or 'directions_offsite' callback query.
     Responds to the user and provides information about studio directions.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -98,7 +102,8 @@ async def callback_directions_offsite(callback: CallbackQuery):
     Handles the 'directions_offsite' callback query. Responds to the user and
     provides information about offsite directions.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -112,7 +117,8 @@ async def callback_soc_profiles(callback: CallbackQuery):
     Handles the 'soc_profiles' callback query. Responds to the user and
     triggers the social profiles command.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -126,7 +132,8 @@ async def callback_tarot(callback: CallbackQuery):
     Handles the 'tarot' callback query. Responds to the user and
     triggers the tarot layout func.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -184,7 +191,8 @@ async def callback_clean(callback: CallbackQuery):
     Handles the 'clean' callback query. Responds to the user and
     triggers the clean command.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -198,7 +206,8 @@ async def callback_clean_chat(callback: CallbackQuery):
     Handles the 'clean_chat' callback query from cmd_clean function.
     Cleans the chat by deleting messages from the database and the chat itself.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 

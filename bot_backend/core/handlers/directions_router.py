@@ -24,8 +24,8 @@ def get_photo(photo_name: str):
     """
     Prepare photo for sending to user.
 
-    :param photo_name: Photo full name with extension.
-    :return:
+    :param photo_name: Photo's full name with extension.
+    :return: An FSInputFile object containing the photo.
     """
 
     path = Path(
@@ -43,7 +43,8 @@ async def callback_epoxy(callback: CallbackQuery):
     Handles the 'epoxy' callback query. Responds to the user and
     provides information about direction.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -101,7 +102,8 @@ async def callback_gips(callback: CallbackQuery):
     Handles the 'gips' or 'gips_offsite' callback query.
     Responds to the user and provides information about direction.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -149,7 +151,8 @@ async def callback_sketching(callback: CallbackQuery):
     Handles the 'sketching' callback query.
     Responds to the user and provides information about direction.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -201,7 +204,8 @@ async def callback_tie_dye(callback: CallbackQuery):
     Handles the 'tie_dye' or 'tie_dye_offsite' callback query.
     Responds to the user and provides information about direction.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -252,7 +256,8 @@ async def callback_custom_cloth(callback: CallbackQuery):
     Handles the 'custom_cloth' callback query.
     Responds to the user and provides information about direction.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -311,7 +316,8 @@ async def callback_candles(callback: CallbackQuery):
     Handles the 'candles' or 'candles_offsite' callback query.
     Responds to the user and provides information about direction.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 

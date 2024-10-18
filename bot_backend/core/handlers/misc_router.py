@@ -9,5 +9,12 @@ misc_router = Router()
 
 @misc_router.message(F)
 async def misc_handler(message: Message):
+    """
+    Handles any message that doesn't match the previous routers.
+
+    :param message: The message sent by the user.
+    :return: None
+    """
+
     await record_message_id_to_db(message)
-    await chepuha(message)
+    await chepuha(message)  # Best func name ever!

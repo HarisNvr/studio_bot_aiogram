@@ -16,6 +16,12 @@ from core.utils.broadcast import broadcast_router
 
 
 async def bot_main():
+    """
+    Main bot logic function. Contains: Dispatcher object, all the routers and
+    infinity polling instruction.
+
+    :return: None
+    """
     basicConfig(
         level=INFO,
         format='[%(levelname)s] %(asctime)s %(name)s: '

@@ -25,7 +25,8 @@ async def callback_admin(callback: CallbackQuery):
     Handles the 'help' callback query. Responds to the user and
     triggers the help command.
 
-    :param callback:
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -56,7 +57,7 @@ async def send_user_count(message: Message):
     Handles the 'users' command. Responds to the admin-user and sends the
     user count.
 
-    :param message:
+    :param message: The message sent by the user.
     :return: None
     """
 
@@ -79,8 +80,8 @@ async def cmd_broadcast(message: Message, state: FSMContext):
     Handles the 'broadcast' command. Responds to the admin-user and starts a
     broadcast sequence.
 
-    :param state:
-    :param message:
+    :param state: FSM context containing the state data.
+    :param message: The message sent by the user.
     :return: None
     """
 
@@ -99,9 +100,10 @@ async def proportions(
     Handles the 'proportions' command. Receive a str value from admin and
     triggers the calculate_proportion function.
 
-    :param state:
-    :param keep_last_msg:
-    :param message:
+    :param state: FSM context containing the state data.
+    :param keep_last_msg: A boolean value that determines whether the previous
+                          message will be deleted.
+    :param message: The message sent by the user.
     :return: None
     """
 
@@ -127,8 +129,9 @@ async def callback_proportion(callback: CallbackQuery, state: FSMContext):
     Handles the 'another_proportion' callback query. Responds to the admin and
     triggers the proportions command.
 
-    :param state: FSM context for managing the user's state.
-    :param callback:
+    :param state: FSM context containing the state data.
+    :param callback: The callback query object containing information about
+                     the message and chat.
     :return: None
     """
 
@@ -143,7 +146,7 @@ async def calculate_proportion(message: Message, state: FSMContext):
     performs calculations, and sends the result back to the user.
 
     :param state: FSM context for managing the user's state.
-    :param message:
+    :param message: The message sent by the user.
     :return: None
     """
 
@@ -193,8 +196,7 @@ async def calculate_proportion(message: Message, state: FSMContext):
             '\nПожалуйста, введите числа по образцу:\n<b>A B C</b>'
         )
         sent_message = await message.reply(
-            reply_text,
-            parse_mode='html'
+            reply_text
         )
 
     await record_message_id_to_db(sent_message)

@@ -14,7 +14,7 @@ async def tarot_main(message: Message):
     introductory disclaimer message, selects 3 random tarot cards, and sends
     their images with descriptions to the user.
 
-    :param message:
+    :param message: The message sent by the user.
     :return:
     """
 

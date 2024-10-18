@@ -27,7 +27,7 @@ async def cmd_start(message: Message):
     Handles the '/start' command when a user initiates
     a conversation with the bot.
 
-    :param message:
+    :param message: The message sent by the user.
     :return:
     """
 
@@ -54,9 +54,9 @@ async def cmd_help(message: Message, keep_last_msg: bool = False):
     """
     Handles the '/help' command when a user calls the main menu.
 
-    :param keep_last_msg: A Boolean value that determines whether the previous
-        message will be deleted
-    :param message:
+    :param keep_last_msg: A boolean value that determines whether the previous
+                          message will be deleted.
+    :param message: The message sent by the user.
     :return:
     """
 
@@ -83,7 +83,7 @@ async def cmd_studio(message: Message):
     """
     Handles the '/studio' command and provides information about the studio.
 
-    :param message:
+    :param message: The message sent by the user.
     :return:
     """
 
@@ -122,7 +122,7 @@ async def cmd_shop(message: Message):
     """
     Handles the '/shop' command and provides information about the studio shop.
 
-    :param message:
+    :param message: The message sent by the user.
     :return:
     """
 
@@ -162,7 +162,7 @@ async def cmd_mk(message: Message):
     """
     Handles the '/mk' command and provides information about offsite workshops.
 
-    :param message:
+    :param message: The message sent by the user.
     :return:
     """
 
@@ -205,7 +205,7 @@ async def cmd_soc_profiles(message: Message):
     """
     Handles the '/soc_profiles' command and sends a list of company contacts.
 
-    :param message:
+    :param message: The message sent by the user.
     :return:
     """
 
@@ -226,7 +226,7 @@ async def cmd_clean(message: Message):
     """
     Handles the '/clean' command and initiates the chat cleaning.
 
-    :param message:
+    :param message: The message sent by the user.
     :return:
     """
 

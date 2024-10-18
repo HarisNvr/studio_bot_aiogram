@@ -30,7 +30,7 @@ async def get_user_id(message: Message):
     """
     Retrieves the user's primary key from the database using the chat id.
 
-    :param message:
+    :param message: The message sent by the user.
     :return: User's primary key - ID
     """
 
@@ -48,7 +48,7 @@ async def record_message_id_to_db(message: Message):
     """
     Record message id's to DB, for 'clean' func.
 
-    :param message:
+    :param message: The message sent by the user.
     :return: Nothing
     """
 
@@ -67,7 +67,7 @@ async def write_user(message: Message):
     """
     Record user's data to DB.
 
-    :param message:
+    :param message: The message sent by the user.
     :return: Nothing
     """
 
@@ -86,7 +86,7 @@ async def update_user(message: Message):
     """
     Update user's data in DB.
 
-    :param message:
+    :param message: The message sent by the user.
     :return: Nothing
     """
 

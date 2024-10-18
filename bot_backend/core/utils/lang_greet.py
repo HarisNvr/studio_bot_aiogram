@@ -5,9 +5,10 @@ def get_lang_greet_text(user_first_name):
     """
     Generates a greeting for the user depending on the random value,
     most often gives a normal greeting.
+
     :param user_first_name: The name of the user in str format that
         initialized the function launch
-    :return: Text greeting in a random language
+    :return: Text greeting in a random language in <str> format.
     """
 
     lang_greet_dict = {
