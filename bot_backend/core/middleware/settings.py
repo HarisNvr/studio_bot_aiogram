@@ -50,7 +50,8 @@ POSTGRES_USER = getenv('POSTGRES_USER')
 POSTGRES_PASSWORD = getenv('POSTGRES_PASSWORD')
 POSTGRES_DB = getenv('POSTGRES_DB')
 DB_HOST = getenv('DB_HOST')
-TZ = timezone(getenv('TZ'))
+TZ_STR = getenv('TZ')
+TZ = timezone(TZ_STR)
 
 DATABASE_URL = (
     f'postgresql+asyncpg://{POSTGRES_USER}:'

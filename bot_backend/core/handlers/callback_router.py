@@ -4,7 +4,7 @@ from datetime import datetime
 from aiogram import Router, F
 from aiogram.exceptions import AiogramError
 from aiogram.types import CallbackQuery
-from sqlalchemy import select, delete, update
+from sqlalchemy import select, delete, update, func
 
 from core.database.background_tasks import get_user_id, record_message_id_to_db
 from core.database.engine import get_async_session
@@ -14,7 +14,7 @@ from core.handlers.user_router import (
 )
 from core.keyboards.offsite_directions_kb import offsite_keyboard
 from core.keyboards.studio_directions_kb import studio_keyboard
-from core.middleware.settings import BOT, ADMIN_IDS, DEL_TIME, TZ
+from core.middleware.settings import BOT, ADMIN_IDS, DEL_TIME, TZ, TZ_STR
 from core.utils.tarot import tarot_main
 
 callback_router = Router()
@@ -143,17 +143,20 @@ async def callback_tarot(callback: CallbackQuery):
     chat_id = message.chat.id
     user_first_name = message.chat.first_name
 
-    stmt = select(User).where(User.chat_id == chat_id)
+    today = datetime.now(TZ).date()
 
     async for session in get_async_session():
+        stmt = select(User).where(
+            User.chat_id == chat_id,
+            func.date(
+                func.timezone(
+                    TZ_STR,
+                    User.last_tarot_date
+                )
+            ) == today
+        )
         result = await session.execute(stmt)
         user = result.scalar_one_or_none()
-
-        last_tarot_date = user.last_tarot_date
-        if last_tarot_date:
-            last_tarot_date = last_tarot_date.date()
-
-        today = datetime.now(TZ)
 
         if chat_id in ADMIN_IDS:
             await callback.message.delete()
@@ -162,7 +165,7 @@ async def callback_tarot(callback: CallbackQuery):
             await tarot_main(message)
             await cmd_help(message, True)
         else:
-            if last_tarot_date == today.date():
+            if user:
                 sent_message = await message.answer(
                     text=f'<u>{user_first_name}</u>, '
                          'вы уже сегодня получили расклад, попробуйте завтра!'
@@ -173,7 +176,7 @@ async def callback_tarot(callback: CallbackQuery):
                 stmt = update(User).where(
                     User.chat_id == chat_id
                 ).values(
-                    last_tarot_date=today
+                    last_tarot_date=datetime.now(TZ)
                 )
                 await session.execute(stmt)
                 await session.commit()
