@@ -17,9 +17,8 @@ async def maintenance_handler(message: Message):
     :return: None
     """
 
-    await record_message_id_to_db(message)
     sent_message = await message.answer(
         text=f'Извините {message.from_user.first_name}, '
              f'сейчас ведутся тех. работы. Попробуйте написать мне позднее.'
     )
-    await record_message_id_to_db(sent_message)
+    await record_message_id_to_db(message, sent_message)

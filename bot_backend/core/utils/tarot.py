@@ -20,6 +20,10 @@ async def tarot_main(message: Message):
 
     tarot_delay = 1.5
     tarot_path = Path(__file__).parent.parent.parent / '..' / 'Tarot'
+    cards = list(tarot_path.glob('*.jpg'))
+    captions = ['Прошлое', 'Настоящее', 'Будущее']
+    user_random_cards = []
+    tarot_messages = []
 
     sent_message = await message.answer(
         text='<b>Расклад Таро - это всего лишь инструмент для '
@@ -33,11 +37,6 @@ async def tarot_main(message: Message):
     )
     await sleep(tarot_delay)
 
-    await record_message_id_to_db(sent_message)
-
-    cards = list(tarot_path.glob('*.jpg'))
-    user_random_cards = []
-
     while len(user_random_cards) < 3:
         card = choice(cards)
         card_num = int(card.stem)
@@ -49,8 +48,6 @@ async def tarot_main(message: Message):
             elif (card_num % 2 == 0 and card_num - 1 not in
                   [int(c.stem) for c in user_random_cards]):
                 user_random_cards.append(card)
-
-    captions = ['Прошлое', 'Настоящее', 'Будущее']
 
     for card, caption in zip(user_random_cards, captions):
         photo = FSInputFile(card)
@@ -64,6 +61,7 @@ async def tarot_main(message: Message):
             caption=f'<b>{caption}</b>: {description}'
         )
 
-        await record_message_id_to_db(tarot_message)
+        tarot_messages.append(tarot_message)
         await sleep(tarot_delay)
 
+    await record_message_id_to_db(sent_message, *tarot_messages)

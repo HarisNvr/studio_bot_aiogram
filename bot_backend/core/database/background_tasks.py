@@ -44,22 +44,24 @@ async def get_user_id(message: Message):
             return user.id
 
 
-async def record_message_id_to_db(message: Message):
+async def record_message_id_to_db(*messages: Message):
     """
     Record message id's to DB, for 'clean' func.
 
-    :param message: The message sent by the user.
+    :param messages: The message sent by the user.
     :return: Nothing
     """
 
-    user_id = await get_user_id(message)
-    stmt = insert(UserMessage).values(
-        user_id=user_id,
-        message_id=message.message_id
-    )
+    stmt_query = [
+        insert(UserMessage).values(
+            user_id=await get_user_id(msg),
+            message_id=msg.message_id
+        ) for msg in messages
+    ]
 
     async for session in get_async_session():
-        await session.execute(stmt)
+        for stmt in stmt_query:
+            await session.execute(stmt)
         await session.commit()
 
 

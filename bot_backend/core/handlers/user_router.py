@@ -31,8 +31,6 @@ async def cmd_start(message: Message):
     :return:
     """
 
-    await record_message_id_to_db(message)
-
     bot_info = await BOT.get_me()
     bot_name = bot_info.username
     start_keyboard = get_main_keyboard(message)
@@ -45,7 +43,7 @@ async def cmd_start(message: Message):
         reply_markup=start_keyboard.as_markup()
     )
 
-    await record_message_id_to_db(sent_message)
+    await record_message_id_to_db(message, sent_message)
 
 
 @user_router.message(Command('help'))
@@ -60,8 +58,6 @@ async def cmd_help(message: Message, keep_last_msg: bool = False):
     :return:
     """
 
-    await record_message_id_to_db(message)
-
     if not keep_last_msg:
         await message.delete()
 
@@ -74,7 +70,7 @@ async def cmd_help(message: Message, keep_last_msg: bool = False):
         reply_markup=help_keyboard.as_markup()
     )
 
-    await record_message_id_to_db(sent_message)
+    await record_message_id_to_db(message, sent_message)
 
 
 @user_router.message(Command('studio'))

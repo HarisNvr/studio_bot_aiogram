@@ -151,8 +151,6 @@ async def calculate_proportion(message: Message, state: FSMContext):
     :return: None
     """
 
-    await record_message_id_to_db(message)
-
     def is_number(item):
         try:
             float(item)
@@ -200,6 +198,6 @@ async def calculate_proportion(message: Message, state: FSMContext):
             reply_text
         )
 
-    await record_message_id_to_db(sent_message)
+    await record_message_id_to_db(message, sent_message)
 
     await state.clear()
