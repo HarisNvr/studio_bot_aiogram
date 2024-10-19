@@ -57,6 +57,7 @@ DATABASE_URL = (
     f'{POSTGRES_PASSWORD}@{DB_HOST}/{POSTGRES_DB}'
 )
 ENGINE_ECHO = getenv('ENGINE_ECHO', '').lower() == 'true'
+MAINTENANCE_MODE = getenv('MAINTENANCE_MODE', '').lower() == 'true'
 
 INSTAGRAM = getenv('INSTAGRAM')
 VK = getenv('VK')

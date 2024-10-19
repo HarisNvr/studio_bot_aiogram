@@ -36,8 +36,9 @@ sudo nano .env
 #Global Vars
 ADMIN_IDS=  # Telegram_ID администраторов
 
-#BOT_TOKENS
+#BOT
 BOT_TOKEN=  # Telegram_API_bot_token
+MAINTENANCE_MODE = False/True  # Перевод бота в состояние тех.работ 
 
 #Postgre_Stuff
 POSTGRES_USER=  # Имя пользователя для доступа к БД
