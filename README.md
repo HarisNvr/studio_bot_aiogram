@@ -23,8 +23,8 @@
 
 - Клонировать репозиторий и перейти в него:
 ```
-git clone https://github.com/HarisNvr/studio_bot.git
-cd studio_bot
+git clone https://github.com/HarisNvr/studio_bot_aiogram.git
+cd studio_bot_aiogram
 ```
 - Настраиваем переменные окружения:
 ```
@@ -65,7 +65,7 @@ CHANNEL_ID=  # Telegram_ID вашего канала
 
 - Запустить Docker compose:
 ```
-docker compose up -d
+sudo docker compose up -d
 ```
 **Бот при запуске сам проверит актуальность схемы в Postgre и применит миграции, если необходимо.**
 ## Команды, вводимые через '/' в чате:
