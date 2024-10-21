@@ -2,7 +2,7 @@ from asyncio import sleep
 from functools import wraps
 
 from aiogram.exceptions import AiogramError
-from aiogram.types import Message, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import Message
 from sqlalchemy import update, select
 
 from core.database.background_tasks import (
@@ -10,8 +10,9 @@ from core.database.background_tasks import (
 )
 from core.database.engine import get_async_session
 from core.database.models import User
+from core.keyboards.subscription_kb import markup_unsubscribed
 from core.middleware.settings import (
-    ADMIN_IDS, BOT, CHANNEL_ID, TG_CHANNEL, DEL_TIME
+    ADMIN_IDS, BOT, CHANNEL_ID, DEL_TIME
 )
 from core.utils.chepuha import chepuha
 
@@ -81,17 +82,6 @@ def sub_check(function):
 
     @wraps(function)
     async def wrapper(message: Message, *args, **kwargs):
-        markup_unsubscribed = InlineKeyboardMarkup(
-            inline_keyboard=[
-                [
-                    InlineKeyboardButton(
-                        text='Наш канал в Telegram',
-                        url=TG_CHANNEL
-                    )
-                ]
-            ]
-        )
-
         try:
             result = await BOT.get_chat_member(CHANNEL_ID, message.chat.id)
 

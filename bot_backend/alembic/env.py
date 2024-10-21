@@ -1,12 +1,13 @@
+from asyncio import run
 from logging.config import fileConfig
 
+from alembic import context
 from sqlalchemy import pool
 from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import create_async_engine
 
-from alembic import context
-from core.middleware.settings import DATABASE_URL
 from core.database.models import Base
+from core.middleware.settings import DATABASE_URL
 
 config = context.config
 target_metadata = Base.metadata
@@ -47,5 +48,4 @@ def do_run_migrations(connection: Connection):
 if context.is_offline_mode():
     run_migrations_offline()
 else:
-    import asyncio
-    asyncio.run(run_migrations_online())
+    run(run_migrations_online())

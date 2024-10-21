@@ -11,7 +11,7 @@ from core.middleware.settings import DEL_TIME
 shop_router = Router()
 
 
-def get_file(file_name: str):
+def get_file(file_name: str) -> FSInputFile:
     """
     Prepare file for sending to user.
 
@@ -22,6 +22,7 @@ def get_file(file_name: str):
     path = Path(
         __file__
     ).parent.parent.parent / '..' / 'shop_delivery' / file_name
+
     return FSInputFile(path)
 
 

@@ -151,17 +151,26 @@ async def calculate_proportion(message: Message, state: FSMContext):
     :return: None
     """
 
-    def is_number(item):
+    def digit_check(*items) -> bool:
+        """
+        Checks whether the item is a number or not. Return True if all the
+        items are digits (<int> or <float>).
+
+        :param items: Item to be verified as numbers.
+        :return: Boolean value, that indicates whether all the items are
+                 digits or not.
+        """
+
         try:
-            float(item)
+            for item in items:
+                float(item)
             return True
         except ValueError:
             return False
 
     prop_input_split = message.text.replace(',', '.').split()
-    digit_check = all(is_number(item) for item in prop_input_split)
 
-    if len(prop_input_split) == 3 and digit_check:
+    if len(prop_input_split) == 3 and digit_check(*prop_input_split):
         a_input, b_input, c_input = map(float, prop_input_split)
 
         a_gr = (c_input / (a_input + b_input)) * a_input
@@ -186,7 +195,7 @@ async def calculate_proportion(message: Message, state: FSMContext):
         )
 
         sent_message = await message.reply(
-            reply_text,
+            text=reply_text,
             reply_markup=proportion_keyboard
         )
     else:
@@ -195,7 +204,7 @@ async def calculate_proportion(message: Message, state: FSMContext):
             '\nПожалуйста, введите числа по образцу:\n<b>A B C</b>'
         )
         sent_message = await message.reply(
-            reply_text
+            text=reply_text
         )
 
     await record_message_id_to_db(message, sent_message)

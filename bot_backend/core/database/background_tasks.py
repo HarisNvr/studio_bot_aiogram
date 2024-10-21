@@ -26,7 +26,7 @@ async def morning_routine():
         await session.commit()
 
 
-async def get_user_id(message: Message):
+async def get_user_id(message: Message) -> int:
     """
     Retrieves the user's primary key from the database using the chat id.
 
@@ -54,9 +54,9 @@ async def record_message_id_to_db(*messages: Message):
 
     stmt_query = [
         insert(UserMessage).values(
-            user_id=await get_user_id(msg),
-            message_id=msg.message_id
-        ) for msg in messages
+            user_id=await get_user_id(message),
+            message_id=message.message_id
+        ) for message in messages
     ]
 
     async for session in get_async_session():
@@ -102,7 +102,7 @@ async def update_user(message: Message):
         await session.commit()
 
 
-async def get_users_count():
+async def get_users_count() -> int:
     """
     Counts the number of users in the database.
 

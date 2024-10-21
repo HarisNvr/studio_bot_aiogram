@@ -8,7 +8,7 @@ from pytz import timezone
 load_dotenv()
 
 
-def get_admin_ids():
+def get_admin_ids() -> list[int]:
     """
     Fetches and returns a list of admin IDs from the environment variable
     'ADMIN_IDS'. The 'ADMIN_IDS' environment variable is expected to be a
@@ -19,8 +19,8 @@ def get_admin_ids():
     """
 
     admin_ids = []
-    for ADMIN_ID in (getenv('ADMIN_IDS').split(',')):
-        admin_ids.append(int(ADMIN_ID))
+    for admin_id in (getenv('ADMIN_IDS').split(',')):
+        admin_ids.append(int(admin_id))
 
     return admin_ids
 

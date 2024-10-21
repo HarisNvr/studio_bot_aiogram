@@ -243,13 +243,13 @@ async def callback_clean_chat(callback: CallbackQuery):
             except AiogramError:
                 pass
 
-            await session.execute(
-                delete(
-                    UserMessage
-                ).where(
-                    UserMessage.user_id == user_db_id,
-                    UserMessage.message_id == msg_id)
+        await session.execute(
+            delete(
+                UserMessage
+            ).where(
+                UserMessage.user_id == user_db_id
             )
+        )
         await session.commit()
 
         await BOT.delete_message(sent_message.chat.id, sent_message.message_id)

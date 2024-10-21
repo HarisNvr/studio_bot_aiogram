@@ -20,7 +20,7 @@ ADDITIONAL_INFO_OFFSITE = (
 )
 
 
-def get_photo(photo_name: str):
+def get_photo(photo_name: str) -> FSInputFile:
     """
     Prepare photo for sending to user.
 

@@ -188,7 +188,15 @@ async def send_broadcast(callback: CallbackQuery, state: FSMContext):
     await BOT.delete_message(chat_id, sent_message.message_id)
     await sleep(DEL_TIME)
 
-    def get_word_form(count, forms):
+    def get_word_form(count: int, forms: list) -> str:
+        """
+        Return formated text, according to Russian grammar rules.
+
+        :param count: User's count.
+        :param forms: List of prompts.
+        :return: Formated text.
+        """
+
         count = str(count)
 
         if count[-1] == '1' and count != '11':

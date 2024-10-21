@@ -20,7 +20,7 @@ async def super_secret_func(message: Message):
 
     await record_message_id_to_db(message)
 
-    def get_photo(photo_name: str):
+    def get_photo(photo_name: str) -> FSInputFile:
         """
         Prepare file for sending to user.
 
@@ -34,12 +34,12 @@ async def super_secret_func(message: Message):
         return FSInputFile(path)
 
     some_dict = {
-        'акуна': message.answer('Матата!'),
-        'матата': message.answer('Акуна!'),
-        'матата акуна': message.answer('\U0001F417 \U0001F439'),
-        'акуна матата': message.answer_photo(get_photo('Akuna.jpg')),
-        '\U0001F346': message.answer_photo(get_photo('bolt.png')),
-        'hello world': message.answer_photo(get_photo('Hello-World.png'))
+        'акуна': message.answer(text='Матата!'),
+        'матата': message.answer(text='Акуна!'),
+        'матата акуна': message.answer(text='\U0001F417 \U0001F439'),
+        'акуна матата': message.answer_photo(photo=get_photo('Akuna.jpg')),
+        '\U0001F346': message.answer_photo(photo=get_photo('bolt.png')),
+        'hello world': message.answer_photo(photo=get_photo('Hello-World.png'))
     }
 
     try:

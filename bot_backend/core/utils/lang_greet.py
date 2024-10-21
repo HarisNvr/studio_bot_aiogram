@@ -1,7 +1,7 @@
 from random import randint
 
 
-def get_lang_greet_text(user_first_name):
+def get_lang_greet_text(user_first_name: str) -> str:
     """
     Generates a greeting for the user depending on the random value,
     most often gives a normal greeting.
