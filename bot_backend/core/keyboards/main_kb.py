@@ -7,10 +7,10 @@ from core.middleware.settings import ADMIN_IDS
 def get_main_keyboard(message: Message):
     """
     Creates a keyboard that contains buttons for the
-    /start command, depending on the requesting user
+    /start command, depending on the requesting user.
 
     :param message: The message sent by the user.
-    :return: Inline Keyboard Builder object
+    :return: InlineKeyboardBuilder object.
     """
 
     start_keyboard = InlineKeyboardMarkup(inline_keyboard=[

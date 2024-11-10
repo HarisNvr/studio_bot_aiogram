@@ -12,7 +12,7 @@ from core.database.engine import get_async_session
 from core.database.models import User
 from core.keyboards.broadcast_kb import (
     init_broadcast_keyboard,
-    confirm_broadcast_keyboard
+    confirm_broadcast_keyboard, get_broadcast_admin_keyboard
 )
 from core.middleware.fsm import BroadcastStates
 from core.middleware.settings import DEL_TIME, BOT, TZ, ADMIN_IDS
@@ -199,12 +199,19 @@ async def send_broadcast(callback: CallbackQuery, state: FSMContext):
         f'\n\n\U0000231A <b>Время:</b> {start_time.split()[1]}'
     )
 
+    admin_link_keyboard = get_broadcast_admin_keyboard(broadcast_admin_id)
+
     for admin_id in ADMIN_IDS:
+        markup = None
+
+        if admin_id != broadcast_admin_id:
+            markup = admin_link_keyboard
+
         await BOT.send_message(
             chat_id=admin_id,
             text=f'{broadcast_success}'
-            '\n'
-            '\n\U00002B07 <b>Содержание</b> \U00002B07'
+            '\n\n\U00002B07 <b>Содержание</b> \U00002B07',
+            reply_markup=markup
         )
 
         await sleep(DEL_TIME)
