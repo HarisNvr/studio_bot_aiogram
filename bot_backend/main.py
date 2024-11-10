@@ -2,6 +2,7 @@ from asyncio import run
 from logging import basicConfig, INFO
 
 from aiogram import Dispatcher
+from aiogram.types import BotCommand
 
 from core.database.background_tasks import morning_routine
 from core.handlers.admin_router import admin_router
@@ -12,7 +13,7 @@ from core.handlers.misc_router import misc_router
 from core.handlers.shop_router import shop_router
 from core.handlers.text_router import text_router
 from core.handlers.user_router import user_router
-from core.middleware.settings import BOT, MAINTENANCE_MODE
+from core.middleware.settings import BOT, MAINTENANCE_MODE, COMMANDS
 from core.utils.broadcast import broadcast_router
 
 
@@ -32,8 +33,14 @@ async def bot_main():
     dp = Dispatcher()
 
     if MAINTENANCE_MODE:
+        await BOT.set_my_commands(
+            [BotCommand(command="start", description="Запуск бота")]
+        )
+
         dp.include_router(maintenance_router)
     else:
+        await BOT.set_my_commands(COMMANDS)
+
         dp.startup.register(morning_routine)
         dp.include_routers(
             admin_router,
@@ -50,6 +57,7 @@ async def bot_main():
         await dp.start_polling(BOT)
     finally:
         await BOT.session.close()
+
 
 if __name__ == '__main__':
     run(bot_main())

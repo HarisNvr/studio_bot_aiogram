@@ -2,6 +2,7 @@ from os import getenv
 
 from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
+from aiogram.types import BotCommand
 from dotenv import load_dotenv
 from pytz import timezone
 
@@ -70,3 +71,34 @@ SUPPORT = getenv('SUPPORT')
 ORG_NAME = getenv('ORG_NAME')
 
 CHANNEL_ID = int(getenv('CHANNEL_ID'))
+
+COMMANDS = [
+    BotCommand(
+        command="start",
+        description="Запуск бота"
+    ),
+    BotCommand(
+        command="help",
+        description="Главное меню"
+    ),
+    BotCommand(
+        command="studio",
+        description="Подробнее о студии"
+    ),
+    BotCommand(
+        command="mk",
+        description="Выездные МК"
+    ),
+    BotCommand(
+        command="shop",
+        description="Наш магазин"
+    ),
+    BotCommand(
+        command="soc_profiles",
+        description="Наши профили в соц.сетях"
+    ),
+    BotCommand(
+        command="clean",
+        description="Очистить чат"
+    ),
+]
