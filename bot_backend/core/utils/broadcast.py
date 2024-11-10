@@ -16,6 +16,7 @@ from core.keyboards.broadcast_kb import (
 )
 from core.middleware.fsm import BroadcastStates
 from core.middleware.settings import DEL_TIME, BOT, TZ, ADMIN_IDS
+from core.utils.format import get_word_form
 
 broadcast_admin_id = None
 """
@@ -188,40 +189,8 @@ async def send_broadcast(callback: CallbackQuery, state: FSMContext):
     await BOT.delete_message(chat_id, sent_message.message_id)
     await sleep(DEL_TIME)
 
-    def get_word_form(count: int, forms: list) -> str:
-        """
-        Return formated text, according to Russian grammar rules.
-
-        :param count: User's count.
-        :param forms: List of prompts.
-        :return: Formated text.
-        """
-
-        count = str(count)
-
-        if count[-1] == '1' and count != '11':
-            return forms[0]
-        elif count[-1] in ['2', '3', '4'] and count not in ['12', '13', '14']:
-            return forms[1]
-        else:
-            return forms[2]
-
-    send_count_form = get_word_form(
-        send_count,
-        [
-            'пользователь получил',
-            'пользователя получили',
-            'пользователей получили'
-        ]
-    )
-    blocked_count_form = get_word_form(
-        blocked_count,
-        [
-            'пользователь заблокировал',
-            'пользователя заблокировали',
-            'пользователей заблокировали'
-        ]
-    )
+    send_count_form = get_word_form(send_count, 'send')
+    blocked_count_form = get_word_form(blocked_count, 'block')
 
     broadcast_success = (
         f'\U0001F6AB <b>{blocked_count}</b> {blocked_count_form} бота'
