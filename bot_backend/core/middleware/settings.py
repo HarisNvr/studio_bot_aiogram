@@ -47,6 +47,8 @@ A list of Telegram user IDs that have the privilege to access and execute
 special administrative functions.
 '''
 
+CHANNEL_ID = int(getenv('CHANNEL_ID'))
+
 POSTGRES_USER = getenv('POSTGRES_USER')
 POSTGRES_PASSWORD = getenv('POSTGRES_PASSWORD')
 POSTGRES_DB = getenv('POSTGRES_DB')
@@ -60,6 +62,7 @@ DATABASE_URL = (
 )
 ENGINE_ECHO = getenv('ENGINE_ECHO', '').lower() == 'true'
 MAINTENANCE_MODE = getenv('MAINTENANCE_MODE', '').lower() == 'true'
+CSV_PATH = 'data_dump/Users.csv'
 
 INSTAGRAM = getenv('INSTAGRAM')
 VK = getenv('VK')
@@ -69,8 +72,6 @@ WA = getenv('WA')
 YA_DISK = getenv('YA_DISK')
 SUPPORT = getenv('SUPPORT')
 ORG_NAME = getenv('ORG_NAME')
-
-CHANNEL_ID = int(getenv('CHANNEL_ID'))
 
 COMMANDS = [
     BotCommand(

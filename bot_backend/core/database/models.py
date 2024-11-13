@@ -54,10 +54,18 @@ class User(Base):
     )
 
     messages = relationship(
-        'UserMessage',
+        argument='UserMessage',
         back_populates='user',
         cascade='all, delete-orphan'
     )
+
+    def simple_dict(self):
+        return {
+            'chat_id': self.chat_id,
+            'username': self.username,
+            'user_first_name': self.user_first_name,
+            'is_subscribed': self.is_subscribed
+        }
 
 
 class UserMessage(Base):
@@ -86,4 +94,4 @@ class UserMessage(Base):
         nullable=False,
     )
 
-    user = relationship('User', back_populates='messages')
+    user = relationship(argument='User', back_populates='messages')
