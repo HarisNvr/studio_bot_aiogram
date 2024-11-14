@@ -23,4 +23,4 @@ async def chepuha(message: Message):
              'около окна ввода сообщения'
     )
 
-    await record_message_id_to_db(sent_message)
+    await record_message_id_to_db(message, sent_message)

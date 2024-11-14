@@ -13,7 +13,7 @@ async def export_users_to_csv():
     Export simplified 'User' entities from the database to CSV file.
     Saved as a CSV file in the 'data_dump' directory.
 
-    :return: Nothing
+    :return: None
     """
 
     async for session in get_async_session():
@@ -28,7 +28,7 @@ async def import_users_from_csv():
     Import user data from a CSV file and insert it into the 'Users' table
     using SQLAlchemy.
 
-    :return: Nothing
+    :return: None
     """
 
     with open(CSV_PATH, mode='r', newline='', encoding='utf-8') as file:

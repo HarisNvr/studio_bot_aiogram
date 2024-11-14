@@ -13,7 +13,7 @@ async def morning_routine():
     Delete old message IDs from the DB. Telegram's policy doesn't allow bots
     to delete messages that are older than 48 hours.
 
-    :return: Nothing
+    :return: None
     """
 
     threshold = datetime.now(TZ) - timedelta(hours=48)
@@ -49,7 +49,7 @@ async def record_message_id_to_db(*messages: Message):
     Record message id's to DB, for 'clean' func.
 
     :param messages: The message sent by the user.
-    :return: Nothing
+    :return: None
     """
 
     stmt_query = [
@@ -70,7 +70,7 @@ async def write_user(message: Message):
     Record user's data to DB.
 
     :param message: The message sent by the user.
-    :return: Nothing
+    :return: None
     """
 
     stmt = insert(User).values(
@@ -89,7 +89,7 @@ async def update_user(message: Message):
     Update user's data in DB.
 
     :param message: The message sent by the user.
-    :return: Nothing
+    :return: None
     """
 
     stmt = update(User).where(User.chat_id == message.chat.id).values(

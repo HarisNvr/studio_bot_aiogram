@@ -70,7 +70,10 @@ async def cmd_help(message: Message, keep_last_msg: bool = False):
         reply_markup=help_keyboard.as_markup()
     )
 
-    await record_message_id_to_db(message, sent_message)
+    if not keep_last_msg:
+        await record_message_id_to_db(sent_message)
+    else:
+        await record_message_id_to_db(message, sent_message)
 
 
 @user_router.message(Command('studio'))
