@@ -1,47 +1,28 @@
 from asyncio import sleep
-from pathlib import Path
 
-from aiogram import Router, F
-from aiogram.types import CallbackQuery, FSInputFile
+from aiogram.types import Message
 
 from core.database.background_tasks import record_message_id_to_db
 from core.keyboards.shop_directions_kb import shop_directions_keyboard
-from core.middleware.settings import DEL_TIME
-
-shop_router = Router()
-
-
-def get_file(file_name: str) -> FSInputFile:
-    """
-    Prepare file for sending to user.
-
-    :param file_name: File's full name with extension.
-    :return: An FSInputFile object containing the file.
-    """
-
-    path = Path(
-        __file__
-    ).parent.parent.parent / '..' / 'shop_delivery' / file_name
-
-    return FSInputFile(path)
+from core.middleware.settings import DEL_TIME, SHOP_DELIVERY
+from core.utils.path_builder import get_file
 
 
-@shop_router.callback_query(F.data == 'catalog')
-async def callback_catalog(callback: CallbackQuery):
+async def catalog(message: Message):
     """
     Handles the 'catalog' callback query. Responds to the user and
     sends a PDF catalog to a user.
 
-    :param callback: The callback query object containing information about
-                     the message and chat.
+    :param message: The message sent by the user.
     :return: None
     """
 
-    await callback.answer()
+    pdf_file = get_file(
+        file_name='CSA_catalog.pdf',
+        directory=SHOP_DELIVERY
+    )
 
-    pdf_file = get_file('CSA_catalog.pdf')
-
-    sent_message = await callback.message.answer_document(
+    sent_message = await message.answer_document(
         document=pdf_file,
         caption='Представляем наш каталог в формате PDF!'
                 '\n\n<u>Не является публичной офертой! '
@@ -52,24 +33,22 @@ async def callback_catalog(callback: CallbackQuery):
     await record_message_id_to_db(sent_message)
 
 
-@shop_router.callback_query(F.data == 'shipment')
-async def callback_shipment(callback: CallbackQuery):
+async def shipment(message: Message):
     """
     Handles the 'shipment' callback query. Responds to the user and
     sends the shipment information.
 
-    :param callback: The callback query object containing information about
-                     the message and chat.
+    :param message: The message sent by the user.
     :return: None
     """
-
-    await callback.answer()
-    message = callback.message
 
     await message.delete()
     await sleep(DEL_TIME)
 
-    shipment_photo = get_file('shipment.jpg')
+    shipment_photo = get_file(
+        file_name='shipment.jpg',
+        directory=SHOP_DELIVERY
+    )
 
     sent_message = await message.answer_photo(
         photo=shipment_photo,
@@ -101,24 +80,22 @@ async def callback_shipment(callback: CallbackQuery):
     await record_message_id_to_db(sent_message)
 
 
-@shop_router.callback_query(F.data == 'pay')
-async def callback_pay(callback: CallbackQuery):
+async def payment(message: Message):
     """
     Handles the 'pay' callback query. Responds to the user and
     sends the information about paying.
 
-    :param callback: The callback query object containing information about
-                     the message and chat.
+    :param message: The message sent by the user.
     :return: None
     """
-
-    await callback.answer()
-    message = callback.message
 
     await message.delete()
     await sleep(DEL_TIME)
 
-    payment_photo = get_file('payment.png')
+    payment_photo = get_file(
+        file_name='payment.png',
+        directory=SHOP_DELIVERY
+    )
 
     sent_message = await message.answer_photo(
         photo=payment_photo,
@@ -145,24 +122,22 @@ async def callback_pay(callback: CallbackQuery):
     await record_message_id_to_db(sent_message)
 
 
-@shop_router.callback_query(F.data == 'order')
-async def callback_order(callback: CallbackQuery):
+async def ordering(message: Message):
     """
     Handles the 'order' callback query. Responds to the user and
     sends information about order process.
 
-    :param callback: The callback query object containing information about
-                     the message and chat.
+    :param message: The message sent by the user.
     :return: None
     """
-
-    await callback.answer()
-    message = callback.message
 
     await message.delete()
     await sleep(DEL_TIME)
 
-    ordering_photo = get_file('ordering.jpg')
+    ordering_photo = get_file(
+        file_name='ordering.jpg',
+        directory=SHOP_DELIVERY
+    )
 
     sent_message = await message.answer_photo(
         photo=ordering_photo,

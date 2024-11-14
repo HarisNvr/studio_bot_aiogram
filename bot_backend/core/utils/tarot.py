@@ -1,6 +1,5 @@
 from asyncio import sleep
 from datetime import datetime
-from pathlib import Path
 from random import choice
 
 from aiogram.types import Message, FSInputFile
@@ -9,9 +8,10 @@ from sqlalchemy import select, func, update
 from core.database.background_tasks import record_message_id_to_db
 from core.database.engine import get_async_session
 from core.database.models import User
-from core.handlers.user_router import cmd_help
-from core.middleware.settings import BOT, ORG_NAME, TZ, TZ_STR, ADMIN_IDS, \
-    DEL_TIME
+from core.handlers.main_handler import cmd_help
+from core.middleware.settings import (
+    BOT, ORG_NAME, TZ, TZ_STR, ADMIN_IDS, DEL_TIME, TAROT
+)
 
 
 async def tarot_start(message: Message):
@@ -84,8 +84,7 @@ async def tarot_main(message: Message):
     """
 
     tarot_delay = 1.5
-    tarot_path = Path(__file__).parent.parent.parent / '..' / 'Tarot'
-    cards = list(tarot_path.glob('*.jpg'))
+    cards = list(TAROT.glob('*.jpg'))
     captions = ['Прошлое', 'Настоящее', 'Будущее']
     user_random_cards = []
     tarot_messages = []

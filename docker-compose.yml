@@ -17,10 +17,8 @@ services:
     build: ./bot_backend/
     env_file: .env
     volumes:
-      - ./easter_eggs:/easter_eggs
-      - ./shop_delivery:/shop_delivery
-      - ./studio_and_directions:/studio_and_directions
-      - ./Tarot:/Tarot
+      - ./media:/media
+      - ./tarot:/tarot
     depends_on:
       - postgres
     restart: always

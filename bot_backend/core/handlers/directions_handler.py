@@ -1,61 +1,60 @@
 from asyncio import sleep
-from pathlib import Path
 
-from aiogram import F, Router
-from aiogram.types import CallbackQuery, FSInputFile
+from aiogram.types import Message
 
 from core.database.background_tasks import record_message_id_to_db
+from core.keyboards.offsite_directions_kb import offsite_keyboard
+from core.keyboards.studio_directions_kb import studio_keyboard
 from core.keyboards.studio_offsite_kb import get_studio_offsite_keyboard
-from core.middleware.settings import DEL_TIME
-
-ADDITIONAL_INFO = (
-    '<u>Уточняйте актуальное расписание, '
-    'перечень изделий и наличие '
-    'мест у мастера!</u>'
+from core.middleware.settings import (
+    DEL_TIME, ADDITIONAL_INFO_OFFSITE, ADDITIONAL_INFO, STUDIO_AND_DIRECTIONS
 )
-ADDITIONAL_INFO_OFFSITE = (
-    '<u>Минимальное количество человек, перечень '
-    'изделий и стоимость выезда на локацию проведения '
-    'уточняйте у мастера!</u>'
-)
+from core.utils.path_builder import get_file
 
 
-def get_photo(photo_name: str) -> FSInputFile:
+async def directions_list(message: Message, data: str):
     """
-    Prepare photo for sending to user.
+    Displays a list of directions based on the data provided.
 
-    :param photo_name: Photo's full name with extension.
-    :return: An FSInputFile object containing the photo.
+    :param message: The message sent by the user.
+    :param data: Callback data associated with the message.
+    :return: None
     """
 
-    path = Path(
-        __file__
-    ).parent.parent.parent / '..' / 'studio_and_directions' / photo_name
-    return FSInputFile(path)
+    await message.delete()
+    await sleep(DEL_TIME)
+
+    if data == 'directions_studio':
+        keyboard = studio_keyboard
+    else:
+        keyboard = offsite_keyboard
+
+    sent_message = await message.answer(
+        text='<b>Выберите <u>направление,</u> о котором хотите '
+             'узнать подробнее:</b>',
+        reply_markup=keyboard
+    )
+
+    await record_message_id_to_db(sent_message)
 
 
-directions_router = Router()
-
-
-@directions_router.callback_query(F.data == 'epoxy')
-async def callback_epoxy(callback: CallbackQuery):
+async def epoxy(message: Message):
     """
     Handles the 'epoxy' callback query. Responds to the user and
     provides information about direction.
 
-    :param callback: The callback query object containing information about
-                     the message and chat.
+    :param message: The message sent by the user.
     :return: None
     """
 
-    await callback.answer()
-    message = callback.message
-
-    await callback.message.delete()
+    await message.delete()
     await sleep(DEL_TIME)
 
-    epoxy_photo = get_photo('epoxy_img.png')
-    epoxy_keyboard = get_studio_offsite_keyboard(False)
+    epoxy_photo = get_file(
+        file_name='epoxy_img.png',
+        directory=STUDIO_AND_DIRECTIONS
+    )
+    epoxy_keyboard = get_studio_offsite_keyboard(is_offsite=False)
 
     sent_message = await message.answer_photo(
         photo=epoxy_photo,
@@ -96,30 +95,29 @@ async def callback_epoxy(callback: CallbackQuery):
     await record_message_id_to_db(sent_message)
 
 
-@directions_router.callback_query(F.data.startswith('gips'))
-async def callback_gips(callback: CallbackQuery):
+async def gips(message: Message, data: str):
     """
     Handles the 'gips' or 'gips_offsite' callback query.
     Responds to the user and provides information about direction.
 
-    :param callback: The callback query object containing information about
-                     the message and chat.
+    :param message: The message sent by the user.
+    :param data: Callback data associated with the message.
     :return: None
     """
 
-    await callback.answer()
-    message = callback.message
-
-    await callback.message.delete()
+    await message.delete()
     await sleep(DEL_TIME)
 
-    gips_photo = get_photo('gips_img.png')
+    gips_photo = get_file(
+        file_name='gips_img.png',
+        directory=STUDIO_AND_DIRECTIONS
+    )
 
-    if callback.data == 'gips_offsite':
-        gips_keyboard = get_studio_offsite_keyboard(True)
+    if data == 'gips_offsite':
+        gips_keyboard = get_studio_offsite_keyboard(is_offsite=True)
         additional_info = ADDITIONAL_INFO_OFFSITE
     else:
-        gips_keyboard = get_studio_offsite_keyboard(False)
+        gips_keyboard = get_studio_offsite_keyboard(is_offsite=False)
         additional_info = ADDITIONAL_INFO
 
     sent_message = await message.answer_photo(
@@ -145,25 +143,23 @@ async def callback_gips(callback: CallbackQuery):
     await record_message_id_to_db(sent_message)
 
 
-@directions_router.callback_query(F.data == 'sketching')
-async def callback_sketching(callback: CallbackQuery):
+async def sketching(message: Message):
     """
     Handles the 'sketching' callback query.
     Responds to the user and provides information about direction.
 
-    :param callback: The callback query object containing information about
-                     the message and chat.
+    :param message: The message sent by the user.
     :return: None
     """
 
-    await callback.answer()
-    message = callback.message
-
-    await callback.message.delete()
+    await message.delete()
     await sleep(DEL_TIME)
 
-    sketching_photo = get_photo('sketch_img.png')
-    sketching_keyboard = get_studio_offsite_keyboard(False)
+    sketching_photo = get_file(
+        file_name='sketch_img.png',
+        directory=STUDIO_AND_DIRECTIONS
+    )
+    sketching_keyboard = get_studio_offsite_keyboard(is_offsite=False)
 
     sent_message = await message.answer_photo(
         photo=sketching_photo,
@@ -198,30 +194,29 @@ async def callback_sketching(callback: CallbackQuery):
     await record_message_id_to_db(sent_message)
 
 
-@directions_router.callback_query(F.data.startswith('tie_dye'))
-async def callback_tie_dye(callback: CallbackQuery):
+async def tie_dye(message: Message, data: str):
     """
     Handles the 'tie_dye' or 'tie_dye_offsite' callback query.
     Responds to the user and provides information about direction.
 
-    :param callback: The callback query object containing information about
-                     the message and chat.
+    :param message: The message sent by the user.
+    :param data: Callback data associated with the message.
     :return: None
     """
 
-    await callback.answer()
-    message = callback.message
-
-    await callback.message.delete()
+    await message.delete()
     await sleep(DEL_TIME)
 
-    tie_dye_photo = get_photo('tie_dye_img.png')
+    tie_dye_photo = get_file(
+        file_name='tie_dye_img.png',
+        directory=STUDIO_AND_DIRECTIONS
+    )
 
-    if callback.data == 'tie_dye_offsite':
-        tie_dye_keyboard = get_studio_offsite_keyboard(True)
+    if data == 'tie_dye_offsite':
+        tie_dye_keyboard = get_studio_offsite_keyboard(is_offsite=True)
         additional_info = ADDITIONAL_INFO_OFFSITE
     else:
-        tie_dye_keyboard = get_studio_offsite_keyboard(False)
+        tie_dye_keyboard = get_studio_offsite_keyboard(is_offsite=False)
         additional_info = ADDITIONAL_INFO
 
     sent_message = await message.answer_photo(
@@ -250,25 +245,23 @@ async def callback_tie_dye(callback: CallbackQuery):
     await record_message_id_to_db(sent_message)
 
 
-@directions_router.callback_query(F.data == 'custom_cloth')
-async def callback_custom_cloth(callback: CallbackQuery):
+async def custom_cloth(message: Message):
     """
     Handles the 'custom_cloth' callback query.
     Responds to the user and provides information about direction.
 
-    :param callback: The callback query object containing information about
-                     the message and chat.
+    :param message: The message sent by the user.
     :return: None
     """
 
-    await callback.answer()
-    message = callback.message
-
-    await callback.message.delete()
+    await message.delete()
     await sleep(DEL_TIME)
 
-    custom_cloth_photo = get_photo('cloth_img.png')
-    custom_cloth_keyboard = get_studio_offsite_keyboard(False)
+    custom_cloth_photo = get_file(
+        file_name='cloth_img.png',
+        directory=STUDIO_AND_DIRECTIONS
+    )
+    custom_cloth_keyboard = get_studio_offsite_keyboard(is_offsite=False)
 
     sent_message = await message.answer_photo(
         photo=custom_cloth_photo,
@@ -310,30 +303,29 @@ async def callback_custom_cloth(callback: CallbackQuery):
     await record_message_id_to_db(sent_message)
 
 
-@directions_router.callback_query(F.data.startswith('candles'))
-async def callback_candles(callback: CallbackQuery):
+async def candles(message: Message, data: str):
     """
     Handles the 'candles' or 'candles_offsite' callback query.
     Responds to the user and provides information about direction.
 
-    :param callback: The callback query object containing information about
-                     the message and chat.
+    :param message: The message sent by the user.
+    :param data: Callback data associated with the message.
     :return: None
     """
 
-    await callback.answer()
-    message = callback.message
-
-    await callback.message.delete()
+    await message.delete()
     await sleep(DEL_TIME)
 
-    candles_photo = get_photo('candles_img.png')
+    candles_photo = get_file(
+        file_name='candles_img.png',
+        directory=STUDIO_AND_DIRECTIONS
+    )
 
-    if callback.data == 'candles_offsite':
-        candles_keyboard = get_studio_offsite_keyboard(True)
+    if data == 'candles_offsite':
+        candles_keyboard = get_studio_offsite_keyboard(is_offsite=True)
         additional_info = ADDITIONAL_INFO_OFFSITE
     else:
-        candles_keyboard = get_studio_offsite_keyboard(False)
+        candles_keyboard = get_studio_offsite_keyboard(is_offsite=False)
         additional_info = ADDITIONAL_INFO
 
     sent_message = await message.answer_photo(

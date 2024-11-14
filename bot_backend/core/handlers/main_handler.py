@@ -1,25 +1,22 @@
 from asyncio import sleep
-from pathlib import Path
 
-from aiogram import Router
-from aiogram.filters import Command
-from aiogram.types import Message, FSInputFile
+from aiogram.types import Message
 
 from core.database.background_tasks import record_message_id_to_db
-from core.keyboards.shop_kb import shop_keyboard
 from core.keyboards.clean_kb import clean_keyboard
-from core.keyboards.mk_kb import mk_keyboard
-from core.keyboards.soc_profiles_kb import soc_profiles_keyboard
 from core.keyboards.main_kb import get_main_keyboard
+from core.keyboards.mk_kb import mk_keyboard
+from core.keyboards.shop_kb import shop_keyboard
+from core.keyboards.soc_profiles_kb import soc_profiles_keyboard
 from core.keyboards.studio_kb import studio_keyboard
-from core.middleware.settings import BOT, DEL_TIME
+from core.middleware.settings import (
+    BOT, DEL_TIME, STUDIO_AND_DIRECTIONS, SHOP_DELIVERY
+)
 from core.middleware.wrappers import check_bd_chat_id, sub_check
 from core.utils.lang_greet import get_lang_greet_text
+from core.utils.path_builder import get_file
 
-user_router = Router()
 
-
-@user_router.message(Command('start'))
 @check_bd_chat_id
 @sub_check
 async def cmd_start(message: Message):
@@ -28,7 +25,7 @@ async def cmd_start(message: Message):
     a conversation with the bot.
 
     :param message: The message sent by the user.
-    :return:
+    :return: None
     """
 
     bot_info = await BOT.get_me()
@@ -46,7 +43,6 @@ async def cmd_start(message: Message):
     await record_message_id_to_db(message, sent_message)
 
 
-@user_router.message(Command('help'))
 @check_bd_chat_id
 async def cmd_help(message: Message, keep_last_msg: bool = False):
     """
@@ -55,7 +51,7 @@ async def cmd_help(message: Message, keep_last_msg: bool = False):
     :param keep_last_msg: A boolean value that determines whether the previous
                           message will be deleted.
     :param message: The message sent by the user.
-    :return:
+    :return: None
     """
 
     if not keep_last_msg:
@@ -76,23 +72,22 @@ async def cmd_help(message: Message, keep_last_msg: bool = False):
         await record_message_id_to_db(message, sent_message)
 
 
-@user_router.message(Command('studio'))
 @check_bd_chat_id
 async def cmd_studio(message: Message):
     """
     Handles the '/studio' command and provides information about the studio.
 
     :param message: The message sent by the user.
-    :return:
+    :return: None
     """
 
     await message.delete()
     await sleep(DEL_TIME)
 
-    photo_path = Path(
-        __file__
-    ).parent.parent.parent / '..' / 'studio_and_directions' / 'studio_img.png'
-    studio_photo = FSInputFile(photo_path)
+    studio_photo = get_file(
+        file_name='studio_img.png',
+        directory=STUDIO_AND_DIRECTIONS
+    )
 
     sent_message = await message.answer_photo(
         photo=studio_photo,
@@ -115,23 +110,22 @@ async def cmd_studio(message: Message):
     await record_message_id_to_db(sent_message)
 
 
-@user_router.message(Command('shop'))
 @check_bd_chat_id
 async def cmd_shop(message: Message):
     """
     Handles the '/shop' command and provides information about the studio shop.
 
     :param message: The message sent by the user.
-    :return:
+    :return: None
     """
 
     await message.delete()
     await sleep(DEL_TIME)
 
-    photo_path = Path(
-        __file__
-    ).parent.parent.parent / '..' / 'shop_delivery' / 'craft_shop.png'
-    shop_photo = FSInputFile(photo_path)
+    shop_photo = get_file(
+        file_name='craft_shop.png',
+        directory=SHOP_DELIVERY
+    )
 
     sent_message = await message.answer_photo(
         photo=shop_photo,
@@ -155,23 +149,22 @@ async def cmd_shop(message: Message):
     await record_message_id_to_db(sent_message)
 
 
-@user_router.message(Command('mk'))
 @check_bd_chat_id
 async def cmd_mk(message: Message):
     """
     Handles the '/mk' command and provides information about offsite workshops.
 
     :param message: The message sent by the user.
-    :return:
+    :return: None
     """
 
     await message.delete()
     await sleep(DEL_TIME)
 
-    mk_photo_path = Path(
-        __file__
-    ).parent.parent.parent / '..' / 'studio_and_directions' / 'offsite_img.png'
-    mk_photo = FSInputFile(mk_photo_path)
+    mk_photo = get_file(
+        file_name='offsite_img.png',
+        directory=STUDIO_AND_DIRECTIONS
+    )
 
     sent_message = await message.answer_photo(
         photo=mk_photo,
@@ -198,14 +191,13 @@ async def cmd_mk(message: Message):
     await record_message_id_to_db(sent_message)
 
 
-@user_router.message(Command('soc_profiles'))
 @check_bd_chat_id
 async def cmd_soc_profiles(message: Message):
     """
     Handles the '/soc_profiles' command and sends a list of company contacts.
 
     :param message: The message sent by the user.
-    :return:
+    :return: None
     """
 
     await message.delete()
@@ -219,14 +211,13 @@ async def cmd_soc_profiles(message: Message):
     await record_message_id_to_db(sent_message)
 
 
-@user_router.message(Command('clean'))
 @check_bd_chat_id
 async def cmd_clean(message: Message):
     """
     Handles the '/clean' command and initiates the chat cleaning.
 
     :param message: The message sent by the user.
-    :return:
+    :return: None
     """
 
     await message.delete()

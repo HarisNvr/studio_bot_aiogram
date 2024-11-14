@@ -4,7 +4,7 @@ shop_keyboard = InlineKeyboardMarkup(inline_keyboard=[
     [
         InlineKeyboardButton(
             text='Как заказать \U00002705',
-            callback_data='order'
+            callback_data='ordering'
         ),
         InlineKeyboardButton(
             text='Каталог \U0001F50D',
@@ -14,7 +14,7 @@ shop_keyboard = InlineKeyboardMarkup(inline_keyboard=[
     [
         InlineKeyboardButton(
             text='Оплата \U0001F4B3',
-            callback_data='pay'
+            callback_data='payment'
         ),
         InlineKeyboardButton(
             text='Доставка \U0001F4E6',

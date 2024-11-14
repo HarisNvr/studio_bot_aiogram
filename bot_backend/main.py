@@ -5,16 +5,11 @@ from aiogram import Dispatcher
 from aiogram.types import BotCommand
 
 from core.database.background_tasks import morning_routine
-from core.handlers.admin_router import admin_router
-from core.handlers.callback_router import callback_router
-from core.handlers.maintenance_router import maintenance_router
-from core.handlers.directions_router import directions_router
-from core.handlers.misc_router import misc_router
-from core.handlers.shop_router import shop_router
-from core.handlers.text_router import text_router
-from core.handlers.user_router import user_router
+from core.routers.maintenance_router import maintenance_router
+from core.routers.main_router import main_router
 from core.middleware.settings import BOT, MAINTENANCE_MODE, COMMANDS
 from core.utils.broadcast import broadcast_router
+from core.utils.proportions import proportions_router
 
 
 async def bot_main():
@@ -34,7 +29,7 @@ async def bot_main():
 
     if MAINTENANCE_MODE:
         await BOT.set_my_commands(
-            [BotCommand(command="start", description="Запуск бота")]
+            [BotCommand(command='start', description='Запуск бота')]
         )
 
         dp.include_router(maintenance_router)
@@ -43,14 +38,9 @@ async def bot_main():
 
         dp.startup.register(morning_routine)
         dp.include_routers(
-            admin_router,
             broadcast_router,
-            user_router,
-            callback_router,
-            shop_router,
-            directions_router,
-            text_router,
-            misc_router
+            proportions_router,
+            main_router
         )
 
     try:
