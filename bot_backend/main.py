@@ -22,7 +22,6 @@ async def bot_main():
     dp = Dispatcher()
 
     if MAINTENANCE_MODE:
-
         await BOT.set_my_commands(
             [BotCommand(command='start', description='Запуск бота')]
         )

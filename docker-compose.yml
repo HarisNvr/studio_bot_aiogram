@@ -21,6 +21,7 @@ services:
     environment:
       DB_HOST: postgres
     volumes:
+      - ./data:/data
       - ./media:/media
       - ./tarot:/tarot
     depends_on:

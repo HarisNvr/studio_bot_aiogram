@@ -9,6 +9,7 @@ from pytz import timezone
 from core.utils.env_utils import get_admin_ids
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+DATA_PATH = BASE_DIR / 'data'
 TAROT = BASE_DIR / 'tarot'
 MEDIA = BASE_DIR / 'media'
 EASTER_EGGS = MEDIA / 'easter_eggs'
@@ -51,7 +52,6 @@ DATABASE_URL = (
 )
 ENGINE_ECHO = getenv('ENGINE_ECHO', '').lower() == 'true'
 MAINTENANCE_MODE = getenv('MAINTENANCE_MODE', '').lower() == 'true'
-CSV_PATH = 'data_dump/Users.csv'
 
 INSTAGRAM = getenv('INSTAGRAM')
 VK = getenv('VK')
