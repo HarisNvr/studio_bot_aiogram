@@ -1,5 +1,7 @@
 from asyncio import sleep
 from datetime import datetime
+from json import load
+from pathlib import Path
 from random import choice
 
 from aiogram.types import Message, FSInputFile
@@ -10,7 +12,8 @@ from core.database.engine import get_async_session
 from core.database.models import User
 from core.handlers.main_handler import cmd_help
 from core.middleware.settings import (
-    BOT, ORG_NAME, TZ, TZ_STR, ADMIN_IDS, DEL_TIME, TAROT
+    BOT, TZ, TZ_STR, ADMIN_IDS, DEL_TIME, TAROT_CARDS, TAROT_DISCLAIMER,
+    TAROT_DESCRIPTION
 )
 
 
@@ -83,41 +86,36 @@ async def tarot_main(message: Message):
     :return: None
     """
 
+    with Path(TAROT_DESCRIPTION).open(encoding='utf-8') as file:
+        tarot_data = load(file)
+
     tarot_delay = 1.5
-    cards = list(TAROT.glob('*.jpg'))
+    cards = list(tarot_data.keys())
     captions = ['Прошлое', 'Настоящее', 'Будущее']
     user_random_cards = []
     tarot_messages = []
 
     sent_message = await message.answer(
-        text='<b>Расклад Таро - это всего лишь инструмент для '
-        'ознакомления и развлечения. '
-        'Расклад карт Таро не является истиной и не должен '
-        'использоваться для принятия важных решений.</b>'
-        '\n'
-        f'\n<u>{ORG_NAME}</u> и его сотрудники не несут '
-        'ответственности за любые действия и их последствия, '
-        'которые повлекло использование данного расклада карт Таро.'
+        text=TAROT_DISCLAIMER
     )
     await sleep(tarot_delay)
 
     while len(user_random_cards) < 3:
         card = choice(cards)
-        card_num = int(card.stem)
+        card_num = int(card)
 
-        if card_num not in [int(c.stem) for c in user_random_cards]:
+        if card_num not in [int(c) for c in user_random_cards]:
             if (card_num % 2 == 1 and card_num + 1 not in
-                    [int(c.stem) for c in user_random_cards]):
+                    [int(c) for c in user_random_cards]):
                 user_random_cards.append(card)
             elif (card_num % 2 == 0 and card_num - 1 not in
-                  [int(c.stem) for c in user_random_cards]):
+                  [int(c) for c in user_random_cards]):
                 user_random_cards.append(card)
 
     for card, caption in zip(user_random_cards, captions):
-        photo = FSInputFile(card)
-        text_file = card.with_suffix('.txt')
-        with text_file.open(encoding='utf-8') as text:
-            description = text.read()
+        card_path = TAROT_CARDS / f'{card}.jpg'
+        photo = FSInputFile(card_path)
+        description = tarot_data[card]
 
         tarot_message = await BOT.send_photo(
             chat_id=message.chat.id,

@@ -9,8 +9,13 @@ from pytz import timezone
 from core.utils.env_utils import get_admin_ids
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+
 DATA_PATH = BASE_DIR / 'data'
+
 TAROT = BASE_DIR / 'tarot'
+TAROT_DESCRIPTION = TAROT / 'tarot_description.json'
+TAROT_CARDS = TAROT / 'cards'
+
 MEDIA = BASE_DIR / 'media'
 EASTER_EGGS = MEDIA / 'easter_eggs'
 SHOP_DELIVERY = MEDIA / 'shop_delivery'
@@ -92,6 +97,17 @@ COMMANDS = [
         description="Очистить чат"
     ),
 ]
+
+TAROT_DISCLAIMER = (
+    '<b>Расклад Таро - это всего лишь инструмент для '
+    'ознакомления и развлечения. '
+    'Расклад карт Таро не является истиной и не должен '
+    'использоваться для принятия важных решений.</b>'
+    '\n'
+    f'\n<u>{ORG_NAME}</u> и его сотрудники не несут '
+    'ответственности за любые действия и их последствия, '
+    'которые повлекло использование данного расклада карт Таро.'
+)
 
 HELP_KEYWORDS = [
     'вернуться', 'главное меню', 'где найти', 'инфо', 'информация',
