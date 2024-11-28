@@ -4,28 +4,9 @@ from pathlib import Path
 from aiogram import Bot
 from aiogram.client.default import DefaultBotProperties
 from aiogram.types import BotCommand
-from dotenv import load_dotenv
 from pytz import timezone
 
-load_dotenv()
-
-
-def get_admin_ids() -> list[int]:
-    """
-    Fetches and returns a list of admin IDs from the environment variable
-    'ADMIN_IDS'. The 'ADMIN_IDS' environment variable is expected to be a
-    comma-separated string of numeric admin IDs, which are then converted
-    to integers.
-
-    :return: List of admin IDs as integers.
-    """
-
-    admin_ids = []
-    for admin_id in (getenv('ADMIN_IDS').split(',')):
-        admin_ids.append(int(admin_id))
-
-    return admin_ids
-
+from core.utils.env_utils import get_admin_ids
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
 TAROT = BASE_DIR / 'tarot'
