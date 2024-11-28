@@ -1,5 +1,4 @@
 from asyncio import run
-from logging import basicConfig, INFO
 
 from aiogram import Dispatcher
 from aiogram.types import BotCommand
@@ -19,15 +18,11 @@ async def bot_main():
 
     :return: None
     """
-    basicConfig(
-        level=INFO,
-        format='[%(levelname)s] %(asctime)s %(name)s: '
-               '(%(filename)s).%(funcName)s(%(lineno)d) - %(message)s'
-    )
 
     dp = Dispatcher()
 
     if MAINTENANCE_MODE:
+
         await BOT.set_my_commands(
             [BotCommand(command='start', description='Запуск бота')]
         )
@@ -37,16 +32,14 @@ async def bot_main():
         await BOT.set_my_commands(COMMANDS)
 
         dp.startup.register(morning_routine)
+
         dp.include_routers(
             broadcast_router,
             proportions_router,
             main_router
         )
 
-    try:
-        await dp.start_polling(BOT)
-    finally:
-        await BOT.session.close()
+    await dp.start_polling(BOT)
 
 
 if __name__ == '__main__':
