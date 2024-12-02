@@ -10,7 +10,7 @@ from sqlalchemy import select
 from core.database.background_tasks import record_message_id_to_db
 from core.database.engine import get_async_session
 from core.database.models import User
-from core.keyboards.broadcast_kb import (
+from core.keyboards.utils_kbs import (
     init_broadcast_keyboard,
     confirm_broadcast_keyboard, get_broadcast_admin_keyboard
 )

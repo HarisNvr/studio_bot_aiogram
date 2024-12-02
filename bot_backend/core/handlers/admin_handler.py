@@ -6,7 +6,7 @@ from aiogram.types import Message
 from core.database.background_tasks import (
     get_users_count, record_message_id_to_db
 )
-from core.keyboards.admin_kb import admin_keyboard
+from core.keyboards.main_kbs import return_to_main_menu_kb
 from core.middleware.settings import DEL_TIME, BOT
 from core.middleware.wrappers import check_is_admin
 from core.utils.broadcast import start_broadcast
@@ -30,7 +30,7 @@ async def admin_menu(message: Message):
              '\n/broadcast - Начать процедуру рассылки'
              '\n'
              '\n/users - Узнать сколько пользователей в БД',
-        reply_markup=admin_keyboard
+        reply_markup=return_to_main_menu_kb
     )
 
     await record_message_id_to_db(sent_message)

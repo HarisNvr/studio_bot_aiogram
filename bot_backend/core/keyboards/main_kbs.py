@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from core.middleware.settings import ADMIN_IDS
+from core.middleware.settings import ADMIN_IDS, TG_CHANNEL
 
 
 def get_main_keyboard(message: Message):
@@ -70,3 +70,24 @@ def get_main_keyboard(message: Message):
         start_markup.adjust(2, 2, 2, 1, 1)
 
     return start_markup
+
+
+return_to_main_menu_kb = InlineKeyboardMarkup(inline_keyboard=[
+    [
+        InlineKeyboardButton(
+            text='Назад',
+            callback_data='help'
+        )
+    ]
+])
+
+unsubscribed_keyboard = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [
+            InlineKeyboardButton(
+                text='Наш канал в Telegram',
+                url=TG_CHANNEL
+            )
+        ]
+    ]
+)

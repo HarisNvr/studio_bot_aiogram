@@ -3,12 +3,12 @@ from asyncio import sleep
 from aiogram.types import Message
 
 from core.database.background_tasks import record_message_id_to_db
-from core.keyboards.clean_kb import clean_keyboard
-from core.keyboards.main_kb import get_main_keyboard
-from core.keyboards.mk_kb import mk_keyboard
-from core.keyboards.shop_kb import shop_keyboard
+from core.keyboards.main_kbs import get_main_keyboard
+from core.keyboards.offsite_kbs import offsite_keyboard
+from core.keyboards.shop_kbs import shop_keyboard
 from core.keyboards.soc_profiles_kb import soc_profiles_keyboard
-from core.keyboards.studio_kb import studio_keyboard
+from core.keyboards.studio_kbs import studio_keyboard
+from core.keyboards.utils_kbs import clean_keyboard
 from core.middleware.settings import (
     BOT, DEL_TIME, STUDIO_AND_DIRECTIONS, SHOP_DELIVERY
 )
@@ -168,7 +168,7 @@ async def cmd_mk(message: Message):
 
     sent_message = await message.answer_photo(
         photo=mk_photo,
-        reply_markup=mk_keyboard,
+        reply_markup=offsite_keyboard,
         caption='<b>Вы хотите удивить гостей '
                 'творческим мастер–классом?</b> '
                 '\n'

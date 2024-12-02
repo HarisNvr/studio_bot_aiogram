@@ -3,9 +3,12 @@ from asyncio import sleep
 from aiogram.types import Message
 
 from core.database.background_tasks import record_message_id_to_db
-from core.keyboards.offsite_directions_kb import offsite_keyboard
-from core.keyboards.studio_directions_kb import studio_keyboard
-from core.keyboards.studio_offsite_kb import get_studio_offsite_keyboard
+from core.keyboards.offsite_kbs import (
+    to_offsite_directions_kb, offsite_directions_keyboard
+)
+from core.keyboards.studio_kbs import (
+    studio_directions_keyboard, to_studio_directions_kb
+)
 from core.middleware.settings import (
     DEL_TIME, ADDITIONAL_INFO_OFFSITE, ADDITIONAL_INFO, STUDIO_AND_DIRECTIONS
 )
@@ -25,9 +28,9 @@ async def directions_list(message: Message, data: str):
     await sleep(DEL_TIME)
 
     if data == 'directions_studio':
-        keyboard = studio_keyboard
+        keyboard = studio_directions_keyboard
     else:
-        keyboard = offsite_keyboard
+        keyboard = offsite_directions_keyboard
 
     sent_message = await message.answer(
         text='<b>Выберите <u>направление,</u> о котором хотите '
@@ -54,7 +57,7 @@ async def epoxy(message: Message):
         file_name='epoxy_img.png',
         directory=STUDIO_AND_DIRECTIONS
     )
-    epoxy_keyboard = get_studio_offsite_keyboard(is_offsite=False)
+    epoxy_keyboard = to_studio_directions_kb
 
     sent_message = await message.answer_photo(
         photo=epoxy_photo,
@@ -114,10 +117,10 @@ async def gips(message: Message, data: str):
     )
 
     if data == 'gips_offsite':
-        gips_keyboard = get_studio_offsite_keyboard(is_offsite=True)
+        gips_keyboard = to_offsite_directions_kb
         additional_info = ADDITIONAL_INFO_OFFSITE
     else:
-        gips_keyboard = get_studio_offsite_keyboard(is_offsite=False)
+        gips_keyboard = to_studio_directions_kb
         additional_info = ADDITIONAL_INFO
 
     sent_message = await message.answer_photo(
@@ -159,7 +162,7 @@ async def sketching(message: Message):
         file_name='sketch_img.png',
         directory=STUDIO_AND_DIRECTIONS
     )
-    sketching_keyboard = get_studio_offsite_keyboard(is_offsite=False)
+    sketching_keyboard = to_studio_directions_kb
 
     sent_message = await message.answer_photo(
         photo=sketching_photo,
@@ -213,10 +216,10 @@ async def tie_dye(message: Message, data: str):
     )
 
     if data == 'tie_dye_offsite':
-        tie_dye_keyboard = get_studio_offsite_keyboard(is_offsite=True)
+        tie_dye_keyboard = to_offsite_directions_kb
         additional_info = ADDITIONAL_INFO_OFFSITE
     else:
-        tie_dye_keyboard = get_studio_offsite_keyboard(is_offsite=False)
+        tie_dye_keyboard = to_studio_directions_kb
         additional_info = ADDITIONAL_INFO
 
     sent_message = await message.answer_photo(
@@ -261,7 +264,7 @@ async def custom_cloth(message: Message):
         file_name='cloth_img.png',
         directory=STUDIO_AND_DIRECTIONS
     )
-    custom_cloth_keyboard = get_studio_offsite_keyboard(is_offsite=False)
+    custom_cloth_keyboard = to_studio_directions_kb
 
     sent_message = await message.answer_photo(
         photo=custom_cloth_photo,
@@ -322,10 +325,10 @@ async def candles(message: Message, data: str):
     )
 
     if data == 'candles_offsite':
-        candles_keyboard = get_studio_offsite_keyboard(is_offsite=True)
+        candles_keyboard = to_offsite_directions_kb
         additional_info = ADDITIONAL_INFO_OFFSITE
     else:
-        candles_keyboard = get_studio_offsite_keyboard(is_offsite=False)
+        candles_keyboard = to_studio_directions_kb
         additional_info = ADDITIONAL_INFO
 
     sent_message = await message.answer_photo(

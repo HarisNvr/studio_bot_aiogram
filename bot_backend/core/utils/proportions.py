@@ -7,8 +7,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
 
 from core.database.background_tasks import record_message_id_to_db
-from core.keyboards.proportion_kb import (
-    another_proportion_keyboard, cancel_proportion_keyboard
+from core.keyboards.utils_kbs import (
+    cancel_proportion_keyboard, another_proportion_keyboard
 )
 from core.middleware.fsm import ProportionStates
 from core.middleware.settings import DEL_TIME, BOT

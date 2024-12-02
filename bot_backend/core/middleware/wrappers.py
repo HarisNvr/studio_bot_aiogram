@@ -10,7 +10,7 @@ from core.database.background_tasks import (
 )
 from core.database.engine import get_async_session
 from core.database.models import User
-from core.keyboards.subscription_kb import markup_unsubscribed
+from core.keyboards.main_kbs import unsubscribed_keyboard
 from core.middleware.settings import (
     ADMIN_IDS, BOT, CHANNEL_ID, DEL_TIME
 )
@@ -106,8 +106,8 @@ def sub_check(function):
                 chat_id=message.chat.id,
                 text='<b>Я заметил, что вы не подписаны на наш ТГ канал, '
                 'это никак не повлияет на мою работу, но мы были бы '
-                'рады вас видеть в нашем крафт-сообществе</b> \U00002665',
-                reply_markup=markup_unsubscribed
+                'рады видеть вас в нашем крафт-сообществе</b> \U00002665',
+                reply_markup=unsubscribed_keyboard
             )
 
             await record_message_id_to_db(sent_message)
