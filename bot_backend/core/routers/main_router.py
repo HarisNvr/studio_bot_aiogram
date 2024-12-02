@@ -11,6 +11,7 @@ from core.handlers.main_handler import (
     cmd_mk, cmd_soc_profiles, cmd_clean
 )
 from core.handlers.shop_handler import catalog, shipment, payment, ordering
+from core.handlers.utils_handler import utils_menu
 from core.middleware.settings import (
     HELP_KEYWORDS, STUDIO_KEYWORDS, SHOP_KEYWORDS, MK_KEYWORDS,
     SOC_PROFS_KEYWORDS
@@ -92,6 +93,8 @@ async def callback_router(callback: CallbackQuery):
         await cmd_soc_profiles(message)
     elif data == 'tarot':
         await tarot_start(message)
+    elif data == 'utils':
+        await utils_menu(message)
 
     if data == 'clean':
         await cmd_clean(message)

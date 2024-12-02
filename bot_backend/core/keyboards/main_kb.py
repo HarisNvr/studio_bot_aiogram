@@ -49,18 +49,24 @@ def get_main_keyboard(message: Message):
                 text='Очистить чат \U0001F9F9',
                 callback_data='clean'
             )
+        ],
+        [
+            InlineKeyboardButton(
+                text='Полезные мелочи \U00002699',
+                callback_data='utils'
+            )
         ]
     ])
 
     start_markup = InlineKeyboardBuilder()
     start_markup.attach(InlineKeyboardBuilder.from_markup(start_keyboard))
-    start_markup.adjust(2, 2, 2)
+    start_markup.adjust(2, 2, 2, 1)
 
     if message.chat.id in ADMIN_IDS:
         start_markup.button(
             text='\U0001F60E Кнопка администратора \U0001F60E',
             callback_data='admin'
         )
-        start_markup.adjust(2, 2, 2, 1)
+        start_markup.adjust(2, 2, 2, 1, 1)
 
     return start_markup

@@ -14,8 +14,8 @@ from core.utils.broadcast import start_broadcast
 
 async def admin_menu(message: Message):
     """
-    Handles the 'help' callback query. Responds to the user and
-    triggers the help command.
+    Handles the 'admin' callback query. Responds to the admin-user and
+    shows admin menu.
 
     :param message: The message sent by the user.
     :return: None
@@ -29,9 +29,7 @@ async def admin_menu(message: Message):
              '\n'
              '\n/broadcast - Начать процедуру рассылки'
              '\n'
-             '\n/users - Узнать сколько пользователей в БД'
-             '\n'
-             '\n/proportions - Калькулятор пропорций',
+             '\n/users - Узнать сколько пользователей в БД',
         reply_markup=admin_keyboard
     )
 
