@@ -1,13 +1,13 @@
 from asyncio import sleep
 
-from aiogram.exceptions import AiogramError
 from aiogram.types import Message
+from more_itertools import chunked
 from sqlalchemy import select, delete
 
 from core.database.background_tasks import get_user_id
 from core.database.engine import get_async_session
 from core.database.models import UserMessage
-from core.middleware.settings import BOT
+from core.middleware.settings import BOT, DEL_TIME
 
 
 async def clean_chat(message: Message):
@@ -20,6 +20,9 @@ async def clean_chat(message: Message):
 
     user_db_id = await get_user_id(message)
 
+    await message.delete()
+    await sleep(DEL_TIME)
+
     stmt = select(
         UserMessage.message_id
     ).where(
@@ -30,19 +33,6 @@ async def clean_chat(message: Message):
         result = await session.execute(stmt)
         message_ids = result.scalars().all()
 
-        await message.delete()
-
-        sent_message = await message.answer(
-            text='<b>Идёт очистка чата</b> \U0001F9F9'
-        )
-
-        for msg_id in message_ids:
-            try:
-                await BOT.delete_message(message.chat.id, msg_id)
-                await sleep(0.01)
-            except AiogramError:
-                pass
-
         await session.execute(
             delete(
                 UserMessage
@@ -52,4 +42,12 @@ async def clean_chat(message: Message):
         )
         await session.commit()
 
-        await BOT.delete_message(sent_message.chat.id, sent_message.message_id)
+        message_chunks = list(chunked(message_ids, 100))
+
+        for msg_list in message_chunks:
+            await BOT.delete_messages(
+                chat_id=message.chat.id,
+                message_ids=msg_list
+            )
+
+            await sleep(0.5)
