@@ -9,7 +9,7 @@ from sqlalchemy.exc import SQLAlchemyError
 
 from core.database.models import User
 from core.middleware.settings import DATA_PATH, TZ_STR
-from engine import get_async_session
+from db_connection import async_session_maker
 
 
 async def export_users_to_csv():
@@ -25,7 +25,7 @@ async def export_users_to_csv():
     )
     csv_path = DATA_PATH / f'Users_{date}.csv'
 
-    async for session in get_async_session():
+    async with async_session_maker() as session:
         result = await session.execute(select(User))
         data = result.scalars().all()
         df = DataFrame([user.simple_dict() for user in data])
@@ -55,7 +55,7 @@ async def import_users_from_csv():
         csv_reader = reader(file)
         headers = next(csv_reader)
 
-        async for session in get_async_session():
+        async with async_session_maker() as session:
             for row in csv_reader:
                 user = User(
                     chat_id=int(row[headers.index('chat_id')]),

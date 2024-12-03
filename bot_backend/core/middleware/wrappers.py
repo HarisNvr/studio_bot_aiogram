@@ -8,7 +8,7 @@ from sqlalchemy import update, select
 from core.database.background_tasks import (
     record_message_id_to_db, update_user, write_user
 )
-from core.database.engine import get_async_session
+from core.database.db_connection import async_session_maker
 from core.database.models import User
 from core.keyboards.main_kbs import unsubscribed_keyboard
 from core.middleware.settings import (
@@ -35,7 +35,7 @@ def check_bd_chat_id(function):
 
         stmt = select(User).where(User.chat_id == chat_id)
 
-        async for session in get_async_session():
+        async with async_session_maker() as session:
             result = await session.execute(stmt)
             user = result.scalar_one_or_none()
 
@@ -96,7 +96,7 @@ def sub_check(function):
             is_subscribed=is_subscribed
         )
 
-        async for session in get_async_session():
+        async with async_session_maker() as session:
             await session.execute(stmt)
             await session.commit()
 

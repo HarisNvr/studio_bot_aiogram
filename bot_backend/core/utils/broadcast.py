@@ -8,7 +8,7 @@ from aiogram.types import Message, CallbackQuery
 from sqlalchemy import select
 
 from core.database.background_tasks import record_message_id_to_db
-from core.database.engine import get_async_session
+from core.database.db_connection import async_session_maker
 from core.database.models import User
 from core.keyboards.utils_kbs import (
     init_broadcast_keyboard,
@@ -168,7 +168,7 @@ async def send_broadcast(callback: CallbackQuery, state: FSMContext):
     send_count = 0
     blocked_count = 0
 
-    async for session in get_async_session():
+    async with async_session_maker() as session:
         result = await session.execute(stmt)
         audience = result.scalars().all()
 

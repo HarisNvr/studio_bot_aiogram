@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from aiogram.types import Message
 from sqlalchemy import delete, select, update, insert, func
 
-from core.database.engine import get_async_session
+from core.database.db_connection import async_session_maker
 from core.database.models import UserMessage, User
 from core.middleware.settings import TZ
 
@@ -21,7 +21,7 @@ async def morning_routine():
         UserMessage.message_date < threshold
     )
 
-    async for session in get_async_session():
+    async with async_session_maker() as session:
         await session.execute(stmt)
         await session.commit()
 
@@ -36,7 +36,7 @@ async def get_user_id(message: Message) -> int:
 
     stmt = select(User).where(User.chat_id == message.chat.id)
 
-    async for session in get_async_session():
+    async with async_session_maker() as session:
         result = await session.execute(stmt)
         user = result.scalar_one_or_none()
 
@@ -59,7 +59,7 @@ async def record_message_id_to_db(*messages: Message):
         ) for message in messages
     ]
 
-    async for session in get_async_session():
+    async with async_session_maker() as session:
         for stmt in stmt_query:
             await session.execute(stmt)
         await session.commit()
@@ -79,7 +79,7 @@ async def write_user(message: Message):
         user_first_name=message.from_user.first_name
     )
 
-    async for session in get_async_session():
+    async with async_session_maker() as session:
         await session.execute(stmt)
         await session.commit()
 
@@ -97,7 +97,7 @@ async def update_user(message: Message):
         user_first_name=message.from_user.first_name
     )
 
-    async for session in get_async_session():
+    async with async_session_maker() as session:
         await session.execute(stmt)
         await session.commit()
 
@@ -111,7 +111,7 @@ async def get_users_count() -> int:
 
     stmt = select(func.count(User.id))
 
-    async for session in get_async_session():
+    async with async_session_maker() as session:
         result = await session.execute(stmt)
         count = result.scalar()
 

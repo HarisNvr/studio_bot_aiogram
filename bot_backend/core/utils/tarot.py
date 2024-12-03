@@ -8,7 +8,7 @@ from aiogram.types import Message, FSInputFile
 from sqlalchemy import select, func, update
 
 from core.database.background_tasks import record_message_id_to_db
-from core.database.engine import get_async_session
+from core.database.db_connection import async_session_maker
 from core.database.models import User
 from core.handlers.main_handler import cmd_help
 from core.middleware.settings import (
@@ -33,7 +33,7 @@ async def tarot_start(message: Message):
 
     today = datetime.now(TZ).date()
 
-    async for session in get_async_session():
+    async with async_session_maker() as session:
         stmt = select(User).where(
             User.chat_id == chat_id,
             func.date(

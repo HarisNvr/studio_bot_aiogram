@@ -5,7 +5,7 @@ from more_itertools import chunked
 from sqlalchemy import select, delete
 
 from core.database.background_tasks import get_user_id
-from core.database.engine import get_async_session
+from core.database.db_connection import async_session_maker
 from core.database.models import UserMessage
 from core.middleware.settings import BOT, DEL_TIME
 
@@ -29,7 +29,7 @@ async def clean_chat(message: Message):
         UserMessage.user_id == user_db_id
     )
 
-    async for session in get_async_session():
+    async with async_session_maker() as session:
         result = await session.execute(stmt)
         message_ids = result.scalars().all()
 
