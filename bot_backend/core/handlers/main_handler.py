@@ -8,7 +8,6 @@ from core.keyboards.offsite_kbs import offsite_keyboard
 from core.keyboards.shop_kbs import shop_keyboard
 from core.keyboards.soc_profiles_kb import soc_profiles_keyboard
 from core.keyboards.studio_kbs import studio_keyboard
-from core.keyboards.utils_kbs import clean_keyboard
 from core.middleware.settings import (
     BOT, DEL_TIME, STUDIO_AND_DIRECTIONS, SHOP_DELIVERY
 )
@@ -206,28 +205,6 @@ async def cmd_soc_profiles(message: Message):
     sent_message = await message.answer(
         text='<b>Какая <u>соц.сеть</u>, вас интересует:</b>',
         reply_markup=soc_profiles_keyboard
-    )
-
-    await record_message_id_to_db(sent_message)
-
-
-@check_bd_chat_id
-async def cmd_clean(message: Message):
-    """
-    Handles the '/clean' command and initiates the chat cleaning.
-
-    :param message: The message sent by the user.
-    :return: None
-    """
-
-    await message.delete()
-    await sleep(DEL_TIME)
-
-    sent_message = await message.answer(
-        text='Вы хотите полностью очистить этот чат?'
-             '\n\n*Сообщения, отправленные более 48ч. назад и рассылка '
-             'удалены не будут',
-        reply_markup=clean_keyboard
     )
 
     await record_message_id_to_db(sent_message)

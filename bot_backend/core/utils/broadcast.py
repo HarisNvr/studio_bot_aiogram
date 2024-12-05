@@ -3,6 +3,7 @@ from datetime import datetime
 
 from aiogram import Router, F
 from aiogram.exceptions import AiogramError
+from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
 from sqlalchemy import select
@@ -34,7 +35,8 @@ broadcast is confirmed or canceled.
 broadcast_router = Router()
 
 
-async def start_broadcast(message: Message, state: FSMContext):
+@broadcast_router.message(Command('broadcast'))
+async def cmd_broadcast(message: Message, state: FSMContext):
     """
     Triggers by 'cmd_broadcast' function in admin router. Receive message from
     admin for broadcasting, lock the broadcast_admin_id variable to prevent

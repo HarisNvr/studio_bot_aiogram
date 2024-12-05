@@ -1,6 +1,5 @@
 from asyncio import sleep
 
-from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from core.database.background_tasks import (
@@ -9,7 +8,6 @@ from core.database.background_tasks import (
 from core.keyboards.main_kbs import return_to_main_menu_kb
 from core.middleware.settings import DEL_TIME, BOT
 from core.middleware.wrappers import check_is_admin
-from core.utils.broadcast import start_broadcast
 
 
 async def admin_menu(message: Message):
@@ -25,7 +23,7 @@ async def admin_menu(message: Message):
     await sleep(DEL_TIME)
 
     sent_message = await message.answer(
-        text='<b>Добро пожаловать в админское меню!</b>'
+        text='<b>Добро пожаловать в меню администратора!</b>'
              '\n'
              '\n/broadcast - Начать процедуру рассылки'
              '\n'
@@ -57,17 +55,3 @@ async def send_user_count(message: Message):
 
     await sleep(3.5)
     await BOT.delete_message(message.chat.id, sent_message.message_id)
-
-
-@check_is_admin
-async def cmd_broadcast(message: Message, state: FSMContext):
-    """
-    Handles the 'broadcast' command. Responds to the admin-user and starts a
-    broadcast sequence.
-
-    :param message: The message sent by the user.
-    :param state: FSM context containing the state data.
-    :return: None
-    """
-
-    await start_broadcast(message, state=state)

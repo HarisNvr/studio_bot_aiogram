@@ -69,33 +69,37 @@ ORG_NAME = getenv('ORG_NAME')
 
 COMMANDS = [
     BotCommand(
-        command="start",
-        description="Запуск бота"
+        command='start',
+        description='Запуск бота'
     ),
     BotCommand(
-        command="help",
-        description="Главное меню"
+        command='help',
+        description='Главное меню'
     ),
     BotCommand(
-        command="studio",
-        description="Подробнее о студии"
+        command='studio',
+        description='Подробнее о студии'
     ),
     BotCommand(
-        command="mk",
-        description="Выездные МК"
+        command='mk',
+        description='Выездные МК'
     ),
     BotCommand(
-        command="shop",
-        description="Наш магазин"
+        command='shop',
+        description='Наш магазин'
     ),
     BotCommand(
-        command="soc_profiles",
-        description="Наши профили в соц.сетях"
+        command='soc_profiles',
+        description='Наши профили в соц.сетях'
     ),
     BotCommand(
-        command="clean",
-        description="Очистить чат"
+        command='utils',
+        description='Полезные мелочи'
     ),
+    BotCommand(
+        command='clean',
+        description='Очистить чат'
+    )
 ]
 
 TAROT_DISCLAIMER = (
@@ -138,7 +142,7 @@ MK_KEYWORDS = [
     'offsite', 'workshop'
 ]
 
-SOC_PROFS_KEYWORDS = [
+SOC_KEYWORDS = [
     'вк', 'вконтакте', 'галерея', 'изображения', 'инстаграм', 'контакты',
     'наши работы', 'наши проекты', 'наши соцсети', 'посмотреть работы',
     'портфолио', 'портфолио студии', 'профили', 'проекты', 'примеры',
