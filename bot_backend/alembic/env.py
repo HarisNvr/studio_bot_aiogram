@@ -7,7 +7,7 @@ from sqlalchemy.engine import Connection
 from sqlalchemy.ext.asyncio import create_async_engine
 
 from core.database.models import Base
-from core.middleware.settings import DATABASE_URL
+from core.components.settings import DATABASE_URL
 
 config = context.config
 target_metadata = Base.metadata
