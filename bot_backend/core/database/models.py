@@ -3,7 +3,7 @@ from datetime import datetime
 from sqlalchemy import TIMESTAMP, Boolean, ForeignKey, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
-from core.middleware.settings import TZ
+from core.components.settings import TZ
 
 
 class Base(DeclarativeBase):
@@ -40,7 +40,7 @@ class User(Base):
     __tablename__ = 'Users'
 
     chat_id: Mapped[int] = mapped_column(unique=True)
-    username: Mapped[str] = mapped_column(String(32))
+    username: Mapped[str] = mapped_column(String(32), nullable=True)
     user_first_name: Mapped[str] = mapped_column(String(32))
     last_tarot_date: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True),
