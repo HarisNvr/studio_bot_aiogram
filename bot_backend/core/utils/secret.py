@@ -1,7 +1,7 @@
 from aiogram.types import Message
 
+from core.components.settings import EASTER_EGGS
 from core.database.background_tasks import record_message_id_to_db
-from core.middleware.settings import EASTER_EGGS
 from core.utils.chepuha import chepuha
 from core.utils.path_builder import get_file
 

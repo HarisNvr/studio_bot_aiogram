@@ -7,8 +7,8 @@ from pandas import DataFrame
 from sqlalchemy import select
 from sqlalchemy.exc import SQLAlchemyError
 
+from core.components.settings import DATA_PATH, TZ_STR
 from core.database.models import User
-from core.middleware.settings import DATA_PATH, TZ_STR
 from db_connection import async_session_maker
 
 

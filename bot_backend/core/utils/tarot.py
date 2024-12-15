@@ -7,14 +7,14 @@ from random import choice
 from aiogram.types import Message, FSInputFile
 from sqlalchemy import select, func, update
 
+from core.components.settings import (
+    BOT, TZ, TZ_STR, ADMIN_IDS, DEL_TIME, TAROT_CARDS, TAROT_DISCLAIMER,
+    TAROT_DESCRIPTION
+)
 from core.database.background_tasks import record_message_id_to_db
 from core.database.db_connection import async_session_maker
 from core.database.models import User
 from core.handlers.main_handler import cmd_help
-from core.middleware.settings import (
-    BOT, TZ, TZ_STR, ADMIN_IDS, DEL_TIME, TAROT_CARDS, TAROT_DISCLAIMER,
-    TAROT_DESCRIPTION
-)
 
 
 async def tarot_start(message: Message):

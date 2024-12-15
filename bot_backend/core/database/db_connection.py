@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 
-from core.middleware.settings import DATABASE_URL, ENGINE_ECHO
+from core.components.settings import DATABASE_URL, ENGINE_ECHO
 
 engine = create_async_engine(
     url=DATABASE_URL,

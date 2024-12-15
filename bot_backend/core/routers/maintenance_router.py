@@ -2,13 +2,11 @@ from aiogram import F, Router
 from aiogram.types import Message
 
 from core.database.background_tasks import record_message_id_to_db
-from core.middleware.wrappers import check_bd_chat_id
 
 maintenance_router = Router()
 
 
 @maintenance_router.message(F)
-@check_bd_chat_id
 async def maintenance_handler(message: Message):
     """
     Handles any message during MAINTENANCE_MODE.

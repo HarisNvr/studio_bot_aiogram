@@ -8,6 +8,8 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
 from sqlalchemy import select
 
+from core.components.fsm import BroadcastStates
+from core.components.settings import DEL_TIME, BOT, TZ, ADMIN_IDS
 from core.database.background_tasks import record_message_id_to_db
 from core.database.db_connection import async_session_maker
 from core.database.models import User
@@ -15,8 +17,6 @@ from core.keyboards.utils_kbs import (
     init_broadcast_keyboard,
     confirm_broadcast_keyboard, get_broadcast_admin_keyboard
 )
-from core.middleware.fsm import BroadcastStates
-from core.middleware.settings import DEL_TIME, BOT, TZ, ADMIN_IDS
 from core.utils.format import get_word_form
 
 broadcast_admin_id = None
@@ -212,7 +212,7 @@ async def send_broadcast(callback: CallbackQuery, state: FSMContext):
         await BOT.send_message(
             chat_id=admin_id,
             text=f'{broadcast_success}'
-            '\n\n\U00002B07 <b>Содержание</b> \U00002B07',
+                 '\n\n\U00002B07 <b>Содержание</b> \U00002B07',
             reply_markup=markup
         )
 

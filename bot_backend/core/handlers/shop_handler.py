@@ -2,9 +2,9 @@ from asyncio import sleep
 
 from aiogram.types import Message
 
+from core.components.settings import DEL_TIME, SHOP_DELIVERY
 from core.database.background_tasks import record_message_id_to_db
 from core.keyboards.shop_kbs import shop_directions_keyboard
-from core.middleware.settings import DEL_TIME, SHOP_DELIVERY
 from core.utils.path_builder import get_file
 
 

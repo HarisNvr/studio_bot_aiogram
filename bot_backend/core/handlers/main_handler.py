@@ -2,22 +2,21 @@ from asyncio import sleep
 
 from aiogram.types import Message
 
+from core.components.settings import (
+    BOT, DEL_TIME, STUDIO_AND_DIRECTIONS, SHOP_DELIVERY
+)
+from core.components.wrappers import sub_remind
 from core.database.background_tasks import record_message_id_to_db
 from core.keyboards.main_kbs import get_main_keyboard
 from core.keyboards.offsite_kbs import offsite_keyboard
 from core.keyboards.shop_kbs import shop_keyboard
 from core.keyboards.soc_profiles_kb import soc_profiles_keyboard
 from core.keyboards.studio_kbs import studio_keyboard
-from core.middleware.settings import (
-    BOT, DEL_TIME, STUDIO_AND_DIRECTIONS, SHOP_DELIVERY
-)
-from core.middleware.wrappers import check_bd_chat_id, sub_check
 from core.utils.lang_greet import get_lang_greet_text
 from core.utils.path_builder import get_file
 
 
-@check_bd_chat_id
-@sub_check
+@sub_remind
 async def cmd_start(message: Message):
     """
     Handles the '/start' command when a user initiates
@@ -42,7 +41,6 @@ async def cmd_start(message: Message):
     await record_message_id_to_db(message, sent_message)
 
 
-@check_bd_chat_id
 async def cmd_help(message: Message, keep_last_msg: bool = False):
     """
     Handles the '/help' command when a user calls the main menu.
@@ -71,7 +69,6 @@ async def cmd_help(message: Message, keep_last_msg: bool = False):
         await record_message_id_to_db(message, sent_message)
 
 
-@check_bd_chat_id
 async def cmd_studio(message: Message):
     """
     Handles the '/studio' command and provides information about the studio.
@@ -109,7 +106,6 @@ async def cmd_studio(message: Message):
     await record_message_id_to_db(sent_message)
 
 
-@check_bd_chat_id
 async def cmd_shop(message: Message):
     """
     Handles the '/shop' command and provides information about the studio shop.
@@ -148,7 +144,6 @@ async def cmd_shop(message: Message):
     await record_message_id_to_db(sent_message)
 
 
-@check_bd_chat_id
 async def cmd_mk(message: Message):
     """
     Handles the '/mk' command and provides information about offsite workshops.
@@ -190,7 +185,6 @@ async def cmd_mk(message: Message):
     await record_message_id_to_db(sent_message)
 
 
-@check_bd_chat_id
 async def cmd_soc_profiles(message: Message):
     """
     Handles the '/soc_profiles' command and sends a list of company contacts.

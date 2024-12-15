@@ -6,17 +6,15 @@ from aiogram.types import Message, CallbackQuery
 from more_itertools import chunked
 from sqlalchemy import select, delete
 
+from core.components.settings import BOT, DEL_TIME
 from core.database.background_tasks import get_user_id, record_message_id_to_db
 from core.database.db_connection import async_session_maker
 from core.database.models import UserMessage
 from core.keyboards.utils_kbs import clean_keyboard
-from core.middleware.settings import BOT, DEL_TIME
-from core.middleware.wrappers import check_bd_chat_id
 
 clean_router = Router()
 
 
-@check_bd_chat_id
 @clean_router.message(Command('clean'))
 async def cmd_clean(message: Message):
     """

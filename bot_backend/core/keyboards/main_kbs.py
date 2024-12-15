@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, Message
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from core.middleware.settings import ADMIN_IDS, TG_CHANNEL
+from core.components.settings import ADMIN_IDS, TG_CHANNEL
 
 
 def get_main_keyboard(message: Message):

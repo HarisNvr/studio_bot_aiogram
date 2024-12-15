@@ -2,9 +2,9 @@ from asyncio import sleep
 
 from aiogram.types import Message
 
+from core.components.settings import DEL_TIME
 from core.database.background_tasks import record_message_id_to_db
 from core.keyboards.main_kbs import return_to_main_menu_kb
-from core.middleware.settings import DEL_TIME
 
 
 async def utils_menu(message: Message):

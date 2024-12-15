@@ -1,12 +1,12 @@
 from aiogram import Router, F
 from aiogram.types import Message, CallbackQuery
 
+from core.components.settings import (
+    HELP_KEYWORDS, STUDIO_KEYWORDS, SHOP_KEYWORDS, MK_KEYWORDS, SOC_KEYWORDS
+)
 from core.database.background_tasks import record_message_id_to_db
 from core.handlers.main_handler import (
     cmd_start, cmd_help, cmd_studio, cmd_shop, cmd_mk, cmd_soc_profiles
-)
-from core.middleware.settings import (
-    HELP_KEYWORDS, STUDIO_KEYWORDS, SHOP_KEYWORDS, MK_KEYWORDS, SOC_KEYWORDS
 )
 from core.utils.chepuha import chepuha
 from core.utils.secret import super_secret_func

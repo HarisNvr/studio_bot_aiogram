@@ -2,15 +2,15 @@ from asyncio import sleep
 
 from aiogram.types import Message
 
+from core.components.settings import (
+    DEL_TIME, ADDITIONAL_INFO_OFFSITE, ADDITIONAL_INFO, STUDIO_AND_DIRECTIONS
+)
 from core.database.background_tasks import record_message_id_to_db
 from core.keyboards.offsite_kbs import (
     to_offsite_directions_kb, offsite_directions_keyboard
 )
 from core.keyboards.studio_kbs import (
     studio_directions_keyboard, to_studio_directions_kb
-)
-from core.middleware.settings import (
-    DEL_TIME, ADDITIONAL_INFO_OFFSITE, ADDITIONAL_INFO, STUDIO_AND_DIRECTIONS
 )
 from core.utils.path_builder import get_file
 

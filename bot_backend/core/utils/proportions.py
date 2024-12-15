@@ -6,13 +6,12 @@ from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, CallbackQuery
 
+from core.components.fsm import ProportionStates
+from core.components.settings import DEL_TIME, BOT
 from core.database.background_tasks import record_message_id_to_db
 from core.keyboards.utils_kbs import (
     cancel_proportion_keyboard, another_proportion_keyboard
 )
-from core.middleware.fsm import ProportionStates
-from core.middleware.settings import DEL_TIME, BOT
-from core.middleware.wrappers import check_bd_chat_id
 
 proportions_router = Router()
 
@@ -94,7 +93,6 @@ def calculate_proportion(user_input: list[str]) -> str | None:
         return reply_text
 
 
-@check_bd_chat_id
 @proportions_router.message(Command('proportions'))
 async def proportions(
         message: Message,

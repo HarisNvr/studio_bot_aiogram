@@ -1,6 +1,6 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-from core.middleware.settings import (
+from core.components.settings import (
     INSTAGRAM, VK, TG_DM, WA, TG_CHANNEL, YA_DISK, SUPPORT
 )
 
