@@ -61,6 +61,8 @@ async def clean_chat(callback: CallbackQuery):
     :return: None
     """
 
+    await callback.answer()
+
     message = callback.message
     user_db_id = await get_user_id(message)
 

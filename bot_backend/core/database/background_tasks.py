@@ -74,7 +74,7 @@ async def write_user(message: Message):
     :return: None
     """
 
-    is_subscribed = await sub_check(message.chat_id)
+    is_subscribed = await sub_check(message.chat.id)
 
     stmt = insert(User).values(
         chat_id=message.chat.id,
@@ -96,7 +96,7 @@ async def update_user(message: Message):
     :return: None
     """
 
-    is_subscribed = await sub_check(message.chat_id)
+    is_subscribed = await sub_check(message.chat.id)
 
     stmt = update(User).where(User.chat_id == message.chat.id).values(
         username=message.from_user.username,

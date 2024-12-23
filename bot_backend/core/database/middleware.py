@@ -26,10 +26,10 @@ class CheckUserDataBaseMiddleware(BaseMiddleware):
             result = await session.execute(stmt)
             user = result.scalar_one_or_none()
 
-            condition_one = user.username == username
-            condition_two = user.user_first_name == user_first_name
-
             if user:
+                condition_one = user.username == username
+                condition_two = user.user_first_name == user_first_name
+
                 if not condition_one or not condition_two:
                     await update_user(event)
             else:
