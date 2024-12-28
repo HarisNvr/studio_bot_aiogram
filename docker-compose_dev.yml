@@ -1,14 +1,13 @@
 volumes:
-  postgres_data:
+  eleni_postgres_data:
 
 services:
   postgres:
-    container_name: postgres
+    container_name: eleni_postgres
     image: postgres:17
     env_file: .env
-    environment:
-      DB_HOST: postgres
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - eleni_postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped

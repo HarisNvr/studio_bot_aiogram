@@ -1,21 +1,19 @@
 volumes:
-  postgres_data:
+  eleni_postgres_data:
 
 services:
   postgres:
-    container_name: postgres
+    container_name: eleni_postgres
     image: postgres:17
     env_file: .env
-    environment:
-      DB_HOST: postgres
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
-    restart: always
+      - eleni_postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
 
   backend:
-    container_name: bot_backend
+    container_name: eleni_bot_backend
     build: ./bot_backend/
     env_file: .env
     environment:
@@ -26,4 +24,4 @@ services:
       - ./tarot:/tarot
     depends_on:
       - postgres
-    restart: always
+    restart: unless-stopped
