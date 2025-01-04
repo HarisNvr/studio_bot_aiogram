@@ -1,6 +1,6 @@
 from datetime import datetime
 
-from sqlalchemy import TIMESTAMP, Boolean, ForeignKey, String
+from sqlalchemy import TIMESTAMP, Boolean, ForeignKey, String, BIGINT
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
 from core.components.settings import TZ
@@ -39,7 +39,7 @@ class User(Base):
 
     __tablename__ = 'Users'
 
-    chat_id: Mapped[int] = mapped_column(unique=True)
+    chat_id: Mapped[int] = mapped_column(BIGINT, unique=True)
     username: Mapped[str] = mapped_column(String(32), nullable=True)
     user_first_name: Mapped[str] = mapped_column(String(32))
     last_tarot_date: Mapped[datetime] = mapped_column(

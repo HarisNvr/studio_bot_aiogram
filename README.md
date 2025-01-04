@@ -66,11 +66,11 @@ CHANNEL_ID=1234567890  # Telegram_ID вашего канала
 
 - Запустить Docker compose (на сервере, в продакшене):
 ```
-sudo docker compose up -d --build
+sudo docker compose up -d
 ```
 - Запустить Docker compose (локально только БД, для разработки через IDE):
 ```
-sudo docker compose -f .\docker-compose_dev.yml up -d --build
+sudo docker compose -f .\docker-compose_dev.yml up -d
 ```
 **Бот при запуске сам проверит актуальность схемы в БД и применит миграции, если необходимо.**
 ## Команды, вводимые через '/' в чате:
