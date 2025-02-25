@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.types import CallbackQuery, Message
 
-from core.handlers.admin_handler import admin_menu, send_user_count
+from core.handlers.admin_handler import admin_menu, send_user
 from core.utils.broadcast import broadcast_router
 
 admin_router = Router()
@@ -43,4 +43,4 @@ async def text_router(message: Message):
     message_text = message.text.lower()
 
     if message_text == '/users':
-        await send_user_count(message)
+        await send_user(message)

@@ -1,11 +1,19 @@
+from asyncio import to_thread
 from datetime import datetime, timedelta
+from os import remove
+from pathlib import Path
 
 from aiogram.types import Message
-from sqlalchemy import delete, select, update, insert, func
+from openpyxl import load_workbook
+from openpyxl.styles import Alignment
+from openpyxl.utils import get_column_letter
+from pandas import DataFrame
+from sqlalchemy import delete, select, update, insert
 
-from core.components.settings import TZ
+from core.components.settings import TZ, BASE_DIR
 from core.database.db_connection import async_session_maker
 from core.database.models import UserMessage, User
+from core.utils.path_builder import get_file
 from core.utils.tg_channel import sub_check
 
 
@@ -109,17 +117,62 @@ async def update_user(message: Message):
         await session.commit()
 
 
-async def get_users_count() -> int:
+async def get_users(message: Message = None) -> None:
     """
-    Counts the number of users in the database.
+    Exports the Users table to an Excel file, sends it to the user through
+    Aiogram, and deletes the file after sending.
 
-    :return: User's count
+    :param message: Telegram user message.
+    :return: None
     """
-
-    stmt = select(func.count(User.id))
 
     async with async_session_maker() as session:
-        result = await session.execute(stmt)
-        count = result.scalar()
+        result = await session.execute(select(User).order_by(User.id))
+        users = result.scalars().all()
 
-        return count
+        data = [
+            {
+                'ID': user.id,
+                'ID чата': user.chat_id,
+                'Никнейм': user.username or '-',
+                'Имя пользователя': user.user_first_name,
+                'Подписан на ТГ': 'ДА' if user.is_subscribed else 'НЕТ'
+            }
+            for user in users
+        ]
+
+        df = DataFrame(data)
+        now = datetime.now().strftime('%d-%m-%Y')
+
+        file_name = f'Таблица пользователей от {now}.xlsx'
+        file_path = BASE_DIR / file_name
+
+        df.to_excel(file_name, index=False, engine='openpyxl')
+
+        ws = load_workbook(file_name).active
+
+        for col in ws.iter_cols():
+            max_length = max(
+                (len(str(cell.value)) for cell in col if cell.value),
+                default=0
+            )
+            ws.column_dimensions[
+                get_column_letter(col[0].column)].width = max_length + 2
+            for cell in col:
+                cell.alignment = Alignment(
+                    horizontal='center',
+                    vertical='center'
+                )
+
+        wb = ws.parent
+        wb.save(file_name)
+        wb.close()
+
+        await message.answer_document(
+            document=get_file(
+                file_name=file_name,
+                directory=BASE_DIR
+            )
+        )
+
+        await to_thread(remove, file_path)
